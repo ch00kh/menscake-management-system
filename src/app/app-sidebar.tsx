@@ -1,26 +1,36 @@
+import * as React from "react"
 import {
   BarChart3Icon,
+  ChevronRightIcon,
   FileEditIcon,
   FileTextIcon,
+  LayersIcon,
   LayoutGridIcon,
   ListIcon,
   NetworkIcon,
+  SettingsIcon,
   WorkflowIcon,
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { layoutGroups, layouts, type LayoutGroup } from "@/layouts/registry"
@@ -34,8 +44,30 @@ const GROUP_ICON: Record<LayoutGroup, typeof ListIcon> = {
   "마스터 · 구조": NetworkIcon,
 }
 
+/** 4단계까지 중첩되므로 기본 들여쓰기로는 폭이 부족하다. 단계별로 좁혀 쓴다. */
+const SUB_L2 = "mx-2 px-2"
+const SUB_NESTED = "mx-1 px-1"
+
 export function AppSidebar() {
   const { pathname } = useLocation()
+
+  const activeGroup = layouts.find(
+    (layout) => pathname === "/layouts/" + layout.slug
+  )?.group
+
+  const [openGroups, setOpenGroups] = React.useState<
+    Partial<Record<LayoutGroup, boolean>>
+  >(() => (activeGroup ? { [activeGroup]: true } : {}))
+
+  // 다른 그룹의 레이아웃으로 이동하면 해당 그룹을 자동으로 펼친다.
+  // (사용자가 직접 접은 그룹은 그대로 두기 위해 렌더 중 보정 패턴을 사용한다.)
+  const [lastActiveGroup, setLastActiveGroup] = React.useState(activeGroup)
+  if (activeGroup !== lastActiveGroup) {
+    setLastActiveGroup(activeGroup)
+    if (activeGroup) {
+      setOpenGroups((prev) => ({ ...prev, [activeGroup]: true }))
+    }
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -62,35 +94,120 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {layoutGroups.map((group) => {
-          const Icon = GROUP_ICON[group]
-          const items = layouts.filter((layout) => layout.group === group)
-          return (
-            <SidebarGroup key={group}>
-              <SidebarGroupLabel>
-                <Icon className="me-1.5 size-3.5" />
-                {group}
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((layout) => (
-                    <SidebarMenuItem key={layout.slug}>
-                      <SidebarMenuButton
-                        isActive={pathname === "/layouts/" + layout.slug}
-                        tooltip={layout.name}
-                        render={<NavLink to={"/layouts/" + layout.slug} />}
-                      >
-                        <Icon />
-                        <span>{layout.name}</span>
-                      </SidebarMenuButton>
-                      <SidebarMenuBadge>{layout.no}</SidebarMenuBadge>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          )
-        })}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {/* 1단계: 환경설정 */}
+              <Collapsible defaultOpen>
+                <SidebarMenuItem>
+                  <CollapsibleTrigger
+                    render={<SidebarMenuButton tooltip="환경설정" />}
+                  >
+                    <SettingsIcon />
+                    <span>환경설정</span>
+                    <ChevronRightIcon className="ms-auto transition-transform group-data-panel-open/menu-button:rotate-90" />
+                  </CollapsibleTrigger>
+
+                  <CollapsibleContent>
+                    <SidebarMenuSub className={SUB_L2}>
+                      {/* 2단계: 레이아웃 */}
+                      <Collapsible defaultOpen>
+                        <SidebarMenuSubItem>
+                          <CollapsibleTrigger
+                            render={
+                              <SidebarMenuSubButton
+                                className="group/layouts w-full cursor-pointer"
+                                render={<button type="button" />}
+                              />
+                            }
+                          >
+                            <LayersIcon />
+                            <span>레이아웃</span>
+                            <ChevronRightIcon className="ms-auto transition-transform group-data-panel-open/layouts:rotate-90" />
+                          </CollapsibleTrigger>
+
+                          <CollapsibleContent>
+                            <SidebarMenuSub className={SUB_NESTED}>
+                              {/* 3단계: 레이아웃 그룹 */}
+                              {layoutGroups.map((group) => {
+                                const Icon = GROUP_ICON[group]
+                                const items = layouts.filter(
+                                  (layout) => layout.group === group
+                                )
+                                return (
+                                  <Collapsible
+                                    key={group}
+                                    open={openGroups[group] ?? false}
+                                    onOpenChange={(open) =>
+                                      setOpenGroups((prev) => ({
+                                        ...prev,
+                                        [group]: open,
+                                      }))
+                                    }
+                                  >
+                                    <SidebarMenuSubItem>
+                                      <CollapsibleTrigger
+                                        render={
+                                          <SidebarMenuSubButton
+                                            className="group/group w-full cursor-pointer"
+                                            render={<button type="button" />}
+                                          />
+                                        }
+                                      >
+                                        <Icon />
+                                        <span className="truncate">
+                                          {group}
+                                        </span>
+                                        <ChevronRightIcon className="ms-auto transition-transform group-data-panel-open/group:rotate-90" />
+                                      </CollapsibleTrigger>
+
+                                      <CollapsibleContent>
+                                        {/* 4단계: 레이아웃 항목 */}
+                                        <SidebarMenuSub className={SUB_NESTED}>
+                                          {items.map((layout) => (
+                                            <SidebarMenuSubItem
+                                              key={layout.slug}
+                                            >
+                                              <SidebarMenuSubButton
+                                                size="sm"
+                                                isActive={
+                                                  pathname ===
+                                                  "/layouts/" + layout.slug
+                                                }
+                                                render={
+                                                  <NavLink
+                                                    to={
+                                                      "/layouts/" + layout.slug
+                                                    }
+                                                  />
+                                                }
+                                              >
+                                                <span className="truncate">
+                                                  {layout.name}
+                                                </span>
+                                                <span className="ms-auto shrink-0 text-xs text-muted-foreground tabular-nums">
+                                                  {layout.no}
+                                                </span>
+                                              </SidebarMenuSubButton>
+                                            </SidebarMenuSubItem>
+                                          ))}
+                                        </SidebarMenuSub>
+                                      </CollapsibleContent>
+                                    </SidebarMenuSubItem>
+                                  </Collapsible>
+                                )
+                              })}
+                            </SidebarMenuSub>
+                          </CollapsibleContent>
+                        </SidebarMenuSubItem>
+                      </Collapsible>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>
