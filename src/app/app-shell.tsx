@@ -12,12 +12,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
+  CommandShortcut,
 } from "@/components/ui/command"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
 import { Separator } from "@/components/ui/separator"
@@ -102,34 +104,45 @@ export function AppShell() {
       </SidebarInset>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="레이아웃 이름 또는 용도로 검색" />
-        <CommandList>
-          <CommandEmpty>결과가 없습니다.</CommandEmpty>
-          {layoutGroups.map((group) => (
-            <CommandGroup key={group} heading={group}>
-              {layouts
-                .filter((layout) => layout.group === group)
-                .map((layout) => (
-                  <CommandItem
-                    key={layout.slug}
-                    value={layout.name + " " + layout.summary + " " + layout.useWhen}
-                    onSelect={() => {
-                      navigate("/layouts/" + layout.slug)
-                      setOpen(false)
-                    }}
-                  >
-                    <span className="w-6 text-xs text-muted-foreground tabular-nums">
-                      {layout.no}
-                    </span>
-                    <span>{layout.name}</span>
-                    <span className="ms-auto truncate text-xs text-muted-foreground">
-                      {layout.summary}
-                    </span>
-                  </CommandItem>
-                ))}
-            </CommandGroup>
-          ))}
-        </CommandList>
+        {/* cmdk는 Input/List/Item 이 Command 루트 안에 있어야 스토어를 찾는다. */}
+        <Command>
+          <CommandInput placeholder="레이아웃 이름 또는 용도로 검색" />
+          <CommandList>
+            <CommandEmpty>결과가 없습니다.</CommandEmpty>
+            {layoutGroups.map((group) => (
+              <CommandGroup key={group} heading={group}>
+                {layouts
+                  .filter((layout) => layout.group === group)
+                  .map((layout) => (
+                    <CommandItem
+                      key={layout.slug}
+                      value={
+                        layout.name +
+                        " " +
+                        layout.summary +
+                        " " +
+                        layout.useWhen
+                      }
+                      onSelect={() => {
+                        navigate("/layouts/" + layout.slug)
+                        setOpen(false)
+                      }}
+                    >
+                      <span className="w-6 text-xs text-muted-foreground tabular-nums">
+                        {layout.no}
+                      </span>
+                      <span>{layout.name}</span>
+                      {/* CommandShortcut 을 써야 CommandItem 의 숨은 체크 아이콘이
+                          비활성화되어 요약문이 오른쪽에 정렬된다. */}
+                      <CommandShortcut className="truncate tracking-normal">
+                        {layout.summary}
+                      </CommandShortcut>
+                    </CommandItem>
+                  ))}
+              </CommandGroup>
+            ))}
+          </CommandList>
+        </Command>
       </CommandDialog>
     </SidebarProvider>
   )
