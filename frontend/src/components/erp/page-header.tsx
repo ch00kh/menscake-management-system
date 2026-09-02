@@ -49,7 +49,7 @@ export function PageHeader({
       ) : null}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="truncate font-heading text-xl font-semibold tracking-tight">
+          <h1 className="truncate font-serif text-xl font-semibold tracking-tight">
             {title}
           </h1>
           {description ? (

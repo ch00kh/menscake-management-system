@@ -1,10 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vite-app</title>
+    <title>N2 ERP</title>
+    <!--
+      테마 클래스를 React 마운트 전에 붙인다.
+
+      ThemeProvider 가 붙여주기를 기다리면 첫 페인트가 기본 테마로 나갔다가
+      바뀌면서 화면이 번쩍인다(FOUC). 나중에 사용자 테마를 서버에서 읽어오게
+      되어도 이 스크립트는 남는다 — localStorage 는 첫 페인트용 캐시,
+      DB 는 기기 간 동기화의 진실 공급원으로 역할이 나뉜다.
+      docs/design/theme.md 6장.
+    -->
+    <script>
+      try {
+        var root = document.documentElement
+        var palette = localStorage.getItem("theme-palette")
+        if (["sugg", "chija", "baengnyeoncho"].indexOf(palette) === -1) {
+          palette = "sugg"
+        }
+        root.classList.add("palette-" + palette)
+
+        var theme = localStorage.getItem("theme") || "system"
+        var dark =
+          theme === "dark" ||
+          (theme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        root.classList.add(dark ? "dark" : "light")
+      } catch (e) {
+        // 시크릿 모드 등에서 localStorage 가 막혀도 앱은 기본 테마로 뜬다.
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -32,7 +32,7 @@ export function Gallery() {
       {layoutGroups.map((group) => (
         <section key={group} className="flex flex-col gap-3">
           <div className="flex items-baseline gap-2">
-            <h2 className="font-heading text-base font-semibold">{group}</h2>
+            <h2 className="font-serif text-base font-semibold">{group}</h2>
             <span className="text-xs text-muted-foreground">
               {layouts.filter((layout) => layout.group === group).length}종
             </span>

@@ -1,13 +1,27 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+/* 본문 — IBM Plex Sans KR. 앱이 쓰는 굵기만 불러온다 (400 / 500 / 600). */
+@import "@fontsource/ibm-plex-sans-kr/400.css";
+@import "@fontsource/ibm-plex-sans-kr/500.css";
+@import "@fontsource/ibm-plex-sans-kr/600.css";
+
+/* 큰 제목 전용 — 고운바탕. 700 만 불러온다.
+   이 서체는 400 과 700 뿐이고, font-serif 를 쓰는 세 곳(페이지 제목 · 사이드바 브랜드 ·
+   갤러리 소제목)이 전부 font-semibold(600 → 700)라 400 은 쓰이지 않는다.
+   한글 서브셋 한 벌이 CSS 94 규칙 + 에셋 6MB 라 안 쓰는 굵기는 싣지 않는다.
+   → font-serif 는 굵은 굵기로만 쓸 것. docs/design/theme.md 7장. */
+@import "@fontsource/gowun-batang/700.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    /* shadcn 컴포넌트 제목(카드 · 다이얼로그 · 시트 …)이 쓴다. 본문과 같은 서체로 두고
+       굵기로만 위계를 준다. */
     --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-sans: 'IBM Plex Sans KR', system-ui, sans-serif;
+    /* Tailwind 의 font-serif 슬롯을 덮는다. 큰 제목 세 곳에만 쓴다. */
+    --font-serif: 'Gowun Batang', 'Apple SD Gothic Neo', serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +53,12 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
+    --color-status-ok: var(--status-ok);
+    --color-status-ok-foreground: var(--status-ok-foreground);
+    --color-status-hold: var(--status-hold);
+    --color-status-hold-foreground: var(--status-hold-foreground);
+    --color-status-reject: var(--status-reject);
+    --color-status-reject-foreground: var(--status-reject-foreground);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -48,73 +68,216 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ==========================================================================
+   시스템 테마 — 송편
+   근거와 값의 출처: docs/design/theme.md
+
+   축이 둘이다. <html> 에 클래스 두 개로 조합한다.
+     팔레트  palette-sugg (기본) | palette-chija | palette-baengnyeoncho
+     밝기    dark (없으면 라이트)
+
+   라이트는 팔레트마다 한 벌. 다크는 솔잎 바탕 한 벌을 세 팔레트가 공유하고
+   주색만 팔레트를 따라간다.
+
+   순서가 중요하다: :root(기본 A) → 팔레트 클래스(같은 명시도, 뒤가 이김)
+   → .dark(다크 지반) → .dark.palette-*(명시도가 더 높아 주색만 덮음).
+   ========================================================================== */
+
+/* --- A · 쑥 (라이트) — 기본 팔레트 -------------------------------------- */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
+    --background: oklch(0.988 0.005 95);
+    --foreground: oklch(0.23 0.018 150);
+    --card: oklch(0.988 0.005 95);
+    --card-foreground: oklch(0.23 0.018 150);
+    --popover: oklch(0.988 0.005 95);
+    --popover-foreground: oklch(0.23 0.018 150);
+    --primary: oklch(0.45 0.055 148);
+    --primary-foreground: oklch(0.985 0.006 95);
+    --secondary: oklch(0.955 0.012 120);
+    --secondary-foreground: oklch(0.30 0.03 148);
+    --muted: oklch(0.955 0.012 120);
+    --muted-foreground: oklch(0.50 0.02 140);
+    --accent: oklch(0.955 0.012 120);
+    --accent-foreground: oklch(0.30 0.03 148);
+    --destructive: oklch(0.55 0.16 25);
+    --border: oklch(0.90 0.014 125);
+    --input: oklch(0.90 0.014 125);
+    --ring: oklch(0.62 0.045 148);
+    --chart-1: oklch(0.72 0.06 148);
+    --chart-2: oklch(0.60 0.065 145);
+    --chart-3: oklch(0.50 0.06 142);
+    --chart-4: oklch(0.40 0.05 148);
+    --chart-5: oklch(0.31 0.04 150);
+
+    /* 상태색 — 팔레트와 무관하게 고정. 테마를 바꿔도 "반려"의 색은 그대로여야 한다.
+       (E 백년초만 예외로 반려를 주황으로 민다. 아래 참조) */
+    --status-ok: oklch(0.93 0.04 148);
+    --status-ok-foreground: oklch(0.36 0.055 148);
+    --status-hold: oklch(0.94 0.05 82);
+    --status-hold-foreground: oklch(0.44 0.09 72);
+    --status-reject: oklch(0.94 0.045 25);
+    --status-reject-foreground: oklch(0.45 0.13 27);
+
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+
+    /* 사이드바는 컨텐츠와 같은 면. 값을 복제하지 않고 본 토큰을 참조한다 —
+       팔레트가 바뀌어도 자동으로 따라간다. */
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
 }
 
+/* palette-sugg 는 :root 와 같다. 클래스를 명시적으로 붙여도 동작하게 둔다. */
+
+/* --- B · 치자 (라이트) --------------------------------------------------- */
+.palette-chija {
+    --background: oklch(0.99 0.012 92);
+    --foreground: oklch(0.25 0.03 70);
+    --card: oklch(0.99 0.012 92);
+    --card-foreground: oklch(0.25 0.03 70);
+    --popover: oklch(0.99 0.012 92);
+    --popover-foreground: oklch(0.25 0.03 70);
+    --primary: oklch(0.66 0.13 75);
+    /* 치자 금색은 밝아서 흰 글씨가 안 읽힌다. 유일하게 어두운 primary-foreground. */
+    --primary-foreground: oklch(0.22 0.04 70);
+    --secondary: oklch(0.962 0.022 88);
+    --secondary-foreground: oklch(0.34 0.06 72);
+    --muted: oklch(0.962 0.022 88);
+    --muted-foreground: oklch(0.52 0.04 70);
+    --accent: oklch(0.962 0.022 88);
+    --accent-foreground: oklch(0.34 0.06 72);
+    --destructive: oklch(0.53 0.17 25);
+    --border: oklch(0.90 0.03 85);
+    --input: oklch(0.90 0.03 85);
+    --ring: oklch(0.72 0.11 75);
+    --chart-1: oklch(0.80 0.11 82);
+    --chart-2: oklch(0.70 0.12 76);
+    --chart-3: oklch(0.60 0.11 72);
+    --chart-4: oklch(0.48 0.09 70);
+    --chart-5: oklch(0.36 0.07 68);
+}
+
+/* --- E · 백년초 (라이트) -------------------------------------------------- */
+.palette-baengnyeoncho {
+    --background: oklch(0.991 0.004 350);
+    --foreground: oklch(0.24 0.02 350);
+    --card: oklch(0.991 0.004 350);
+    --card-foreground: oklch(0.24 0.02 350);
+    --popover: oklch(0.991 0.004 350);
+    --popover-foreground: oklch(0.24 0.02 350);
+    --primary: oklch(0.55 0.15 5);
+    --primary-foreground: oklch(0.99 0.008 350);
+    --secondary: oklch(0.958 0.014 350);
+    --secondary-foreground: oklch(0.34 0.06 355);
+    --muted: oklch(0.958 0.014 350);
+    --muted-foreground: oklch(0.51 0.03 350);
+    --accent: oklch(0.958 0.014 350);
+    --accent-foreground: oklch(0.34 0.06 355);
+    /* 자홍이 주색이면 사용자가 자홍을 "오류·삭제"로 읽는다. 경고를 주황으로 밀어 분리한다. */
+    --destructive: oklch(0.52 0.15 45);
+    --border: oklch(0.905 0.018 350);
+    --input: oklch(0.905 0.018 350);
+    --ring: oklch(0.66 0.12 5);
+    --chart-1: oklch(0.76 0.11 8);
+    --chart-2: oklch(0.66 0.13 5);
+    --chart-3: oklch(0.55 0.15 2);
+    --chart-4: oklch(0.44 0.12 358);
+    --chart-5: oklch(0.33 0.09 355);
+    /* 반려도 주색과 겹치지 않게 주황으로. */
+    --status-reject: oklch(0.94 0.05 45);
+    --status-reject-foreground: oklch(0.45 0.12 48);
+}
+
+/* --- 다크 · 솔잎 — 세 팔레트 공용 지반 ----------------------------------- */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --background: oklch(0.19 0.018 155);
+    --foreground: oklch(0.955 0.008 110);
+    --card: oklch(0.225 0.018 155);
+    --card-foreground: oklch(0.955 0.008 110);
+    --popover: oklch(0.225 0.018 155);
+    --popover-foreground: oklch(0.955 0.008 110);
+    --primary-foreground: oklch(0.19 0.018 155);
+    --secondary: oklch(0.285 0.020 155);
+    --secondary-foreground: oklch(0.955 0.008 110);
+    --muted: oklch(0.285 0.020 155);
+    --muted-foreground: oklch(0.72 0.018 145);
+    --accent: oklch(0.285 0.020 155);
+    --accent-foreground: oklch(0.955 0.008 110);
+    --destructive: oklch(0.70 0.17 25);
+    --border: oklch(0.85 0.03 150 / 18%);
+    --input: oklch(0.85 0.03 150 / 24%);
+    --ring: oklch(0.55 0.04 148);
+
+    --status-ok: oklch(0.33 0.055 148);
+    --status-ok-foreground: oklch(0.87 0.075 148);
+    --status-hold: oklch(0.34 0.06 78);
+    --status-hold-foreground: oklch(0.88 0.09 82);
+    --status-reject: oklch(0.35 0.075 22);
+    --status-reject-foreground: oklch(0.86 0.09 25);
+}
+
+/* 다크 주색 — 팔레트를 따라간다. .dark 보다 명시도가 높아 주색만 덮는다. */
+.dark,
+.dark.palette-sugg {
+    --primary: oklch(0.74 0.09 145);
+    --chart-1: oklch(0.82 0.07 148);
+    --chart-2: oklch(0.72 0.08 145);
+    --chart-3: oklch(0.62 0.075 142);
+    --chart-4: oklch(0.52 0.065 148);
+    --chart-5: oklch(0.42 0.05 150);
+}
+
+.dark.palette-chija {
+    --primary: oklch(0.80 0.12 82);
+    --ring: oklch(0.60 0.07 75);
+    --chart-1: oklch(0.86 0.10 84);
+    --chart-2: oklch(0.78 0.12 79);
+    --chart-3: oklch(0.68 0.12 75);
+    --chart-4: oklch(0.56 0.10 72);
+    --chart-5: oklch(0.44 0.08 70);
+}
+
+.dark.palette-baengnyeoncho {
+    --primary: oklch(0.72 0.14 8);
+    --ring: oklch(0.56 0.10 5);
+    --chart-1: oklch(0.82 0.10 10);
+    --chart-2: oklch(0.72 0.14 6);
+    --chart-3: oklch(0.62 0.15 3);
+    --chart-4: oklch(0.50 0.13 358);
+    --chart-5: oklch(0.40 0.10 355);
+    --status-reject: oklch(0.35 0.08 45);
+    --status-reject-foreground: oklch(0.87 0.09 48);
+}
+
+/**
+ * 탭 스트립 배경. 헤더 · 탭 줄 · 플로팅 사이드바 주변 여백이 공유한다.
+ *
+ * `bg-muted/50` 을 쓰면 반투명이라 오른쪽 고정 버튼 아래로 지나가는 탭이 비친다.
+ * 같은 색을 배경(--background) 위에 미리 합성해 불투명하게 만든다. 토큰을 참조하므로
+ * 팔레트와 밝기를 자동으로 따라간다.
+ */
+@utility bg-tab-strip {
+  background-color: color-mix(in oklab, var(--muted) 50%, var(--background));
+}
+
+/**
+ * 스크롤바를 숨긴다. 스크롤 자체는 그대로 동작한다.
+ *
+ * shadcn 레지스트리 컴포넌트(sidebar, command, combobox)가 이 클래스를 쓰면서
+ * 프로젝트가 정의하기를 기대한다. 정의가 없으면 아무 효과 없는 클래스가 된다.
+ */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer base {
