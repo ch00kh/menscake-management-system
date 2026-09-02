@@ -15,7 +15,7 @@ import { FullPage } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
 import { RecordTable } from "@/components/erp/record-table"
 import { DescriptionList } from "@/components/erp/stats"
-import { num, rows, statusVariant, timeline, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, timeline, formatWon } from "@/data/mock"
 
 export function MasterDetail() {
   const [active, setActive] = React.useState(rows[0])
@@ -82,8 +82,8 @@ export function MasterDetail() {
                       items={[
                         { label: "구분", value: active.category },
                         { label: "담당자", value: active.owner },
-                        { label: "수량", value: num(active.qty) },
-                        { label: "금액", value: won(active.amount) },
+                        { label: "수량", value: formatNumber(active.quantity) },
+                        { label: "금액", value: formatWon(active.amount) },
                         { label: "등록일", value: active.date },
                         { label: "진행률", value: active.progress + "%" },
                       ]}

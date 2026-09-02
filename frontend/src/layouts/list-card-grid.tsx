@@ -16,7 +16,7 @@ import { FilterBar } from "@/components/erp/filter-bar"
 import { Page } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
 import { TableFooterBar } from "@/components/erp/record-table"
-import { num, rows, statusVariant, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, formatWon } from "@/data/mock"
 
 export function ListCardGrid() {
   return (
@@ -58,8 +58,8 @@ export function ListCardGrid() {
                 </ProgressTrack>
               </Progress>
               <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
-                <span>수량 {num(row.qty)}</span>
-                <span>{won(row.amount)}</span>
+                <span>수량 {formatNumber(row.quantity)}</span>
+                <span>{formatWon(row.amount)}</span>
               </div>
             </CardContent>
             <CardFooter className="justify-between text-xs text-muted-foreground">

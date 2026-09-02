@@ -91,8 +91,8 @@ export function FormTwoColumn() {
                   </FieldDescription>
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="t-qty">수량</FieldLabel>
-                  <Input id="t-qty" type="number" defaultValue={120} />
+                  <FieldLabel htmlFor="t-quantity">수량</FieldLabel>
+                  <Input id="t-quantity" type="number" defaultValue={120} />
                 </Field>
                 <Field>
                   <FieldLabel htmlFor="t-amount">금액</FieldLabel>

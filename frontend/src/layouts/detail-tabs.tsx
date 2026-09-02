@@ -15,7 +15,7 @@ import { Page, Surface } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
 import { RecordTable } from "@/components/erp/record-table"
 import { DescriptionList } from "@/components/erp/stats"
-import { num, rows, statusVariant, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, formatWon } from "@/data/mock"
 
 const record = rows[0]
 
@@ -72,8 +72,8 @@ export function DetailTabs() {
                   { label: "명칭", value: record.name },
                   { label: "구분", value: record.category },
                   { label: "담당자", value: record.owner },
-                  { label: "수량", value: num(record.qty) },
-                  { label: "금액", value: won(record.amount) },
+                  { label: "수량", value: formatNumber(record.quantity) },
+                  { label: "금액", value: formatWon(record.amount) },
                   { label: "등록일", value: record.date },
                   { label: "진행률", value: record.progress + "%" },
                   { label: "상태", value: record.status },
@@ -88,7 +88,7 @@ export function DetailTabs() {
               data={rows.slice(0, 6)}
               selectable={false}
               withTotal
-              columns={["code", "name", "qty", "amount"]}
+              columns={["code", "name", "quantity", "amount"]}
             />
           </Surface>
         </TabsContent>

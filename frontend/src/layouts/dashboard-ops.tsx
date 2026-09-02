@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator"
 import { ComparisonChart } from "@/components/erp/charts"
 import { FullPage } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
-import { num, rows, statusVariant, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, formatWon } from "@/data/mock"
 
 export function DashboardOps() {
   return (
@@ -96,7 +96,7 @@ export function DashboardOps() {
                 <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
                   <span>{row.owner}</span>
                   <span>
-                    {num(row.qty)} · {won(row.amount)}
+                    {formatNumber(row.quantity)} · {formatWon(row.amount)}
                   </span>
                 </div>
                 <Separator className="mt-1" />

@@ -13,7 +13,7 @@ import { FullPage, Surface } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
 import { RecordTable } from "@/components/erp/record-table"
 import { DescriptionList } from "@/components/erp/stats"
-import { num, rows, statusVariant, timeline, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, timeline, formatWon } from "@/data/mock"
 
 export function ApprovalInbox() {
   const [activeId, setActiveId] = React.useState(rows[0].id)
@@ -60,7 +60,7 @@ export function ApprovalInbox() {
                     </Badge>
                   </div>
                   <span className="truncate text-xs text-muted-foreground">
-                    {row.owner} · {row.date} · {won(row.amount)}
+                    {row.owner} · {row.date} · {formatWon(row.amount)}
                   </span>
                 </div>
               </button>
@@ -98,8 +98,8 @@ export function ApprovalInbox() {
                 { label: "구분", value: active.category },
                 { label: "기안자", value: active.owner },
                 { label: "기안일", value: active.date },
-                { label: "수량", value: num(active.qty) },
-                { label: "금액", value: won(active.amount) },
+                { label: "수량", value: formatNumber(active.quantity) },
+                { label: "금액", value: formatWon(active.amount) },
                 { label: "상태", value: active.status },
               ]}
             />
@@ -111,7 +111,7 @@ export function ApprovalInbox() {
                   data={rows.slice(0, 4)}
                   selectable={false}
                   withTotal
-                  columns={["code", "name", "qty", "amount"]}
+                  columns={["code", "name", "quantity", "amount"]}
                 />
               </Surface>
             </div>

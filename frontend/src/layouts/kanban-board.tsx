@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { FullPage } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
-import { kanban, won } from "@/data/mock"
+import { kanban, formatWon } from "@/data/mock"
 
 export function KanbanBoard() {
   return (
@@ -49,7 +49,7 @@ export function KanbanBoard() {
                       <div className="flex items-center gap-1.5">
                         <Badge variant="outline">{item.category}</Badge>
                         <span className="text-xs text-muted-foreground tabular-nums">
-                          {won(item.amount)}
+                          {formatWon(item.amount)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">

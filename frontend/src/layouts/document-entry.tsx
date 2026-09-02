@@ -19,9 +19,9 @@ import {
 } from "@/components/ui/table"
 import { FullPage } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
-import { CATEGORIES, lineItems, num, OWNERS, won } from "@/data/mock"
+import { CATEGORIES, lineItems, formatNumber, OWNERS, formatWon } from "@/data/mock"
 
-const supply = lineItems.reduce((sum, item) => sum + item.qty * item.price, 0)
+const supply = lineItems.reduce((sum, item) => sum + item.quantity * item.price, 0)
 const vat = Math.round(supply * 0.1)
 
 export function DocumentEntry() {
@@ -133,7 +133,7 @@ export function DocumentEntry() {
                 </TableCell>
                 <TableCell className="p-1">
                   <Input
-                    defaultValue={item.qty}
+                    defaultValue={item.quantity}
                     type="number"
                     className="h-7 text-right tabular-nums"
                   />
@@ -146,7 +146,7 @@ export function DocumentEntry() {
                   />
                 </TableCell>
                 <TableCell className="text-right tabular-nums">
-                  {won(item.qty * item.price)}
+                  {formatWon(item.quantity * item.price)}
                 </TableCell>
               </TableRow>
             ))}
@@ -159,21 +159,21 @@ export function DocumentEntry() {
         <div className="flex items-baseline gap-2">
           <span className="text-xs text-muted-foreground">총 수량</span>
           <span className="text-sm font-medium tabular-nums">
-            {num(lineItems.reduce((s, i) => s + i.qty, 0))}
+            {formatNumber(lineItems.reduce((s, i) => s + i.quantity, 0))}
           </span>
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-xs text-muted-foreground">공급가액</span>
-          <span className="text-sm font-medium tabular-nums">{won(supply)}</span>
+          <span className="text-sm font-medium tabular-nums">{formatWon(supply)}</span>
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-xs text-muted-foreground">부가세</span>
-          <span className="text-sm font-medium tabular-nums">{won(vat)}</span>
+          <span className="text-sm font-medium tabular-nums">{formatWon(vat)}</span>
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-xs text-muted-foreground">합계</span>
           <span className="font-heading text-lg font-semibold tabular-nums">
-            {won(supply + vat)}
+            {formatWon(supply + vat)}
           </span>
         </div>
       </div>

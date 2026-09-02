@@ -98,7 +98,7 @@ export function FormWizard() {
               <RecordTable
                 data={rows.slice(0, 5)}
                 withTotal
-                columns={["code", "name", "qty", "amount"]}
+                columns={["code", "name", "quantity", "amount"]}
               />
             </Surface>
           ) : null}

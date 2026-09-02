@@ -26,7 +26,7 @@ export type Row = {
   category: string
   owner: string
   status: Status
-  qty: number
+  quantity: number
   amount: number
   progress: number
   date: string
@@ -63,7 +63,7 @@ export const rows: Row[] = NAMES.map((name, i) => ({
   category: CATEGORIES[i % CATEGORIES.length],
   owner: OWNERS[i % OWNERS.length],
   status: STATUSES[i % STATUSES.length],
-  qty: 12 + ((i * 37) % 480),
+  quantity: 12 + ((i * 37) % 480),
   amount: 1_250_000 + ((i * 987_654) % 48_000_000),
   progress: (i * 13) % 101,
   date: `2026-0${(i % 9) + 1}-${String(((i * 7) % 27) + 1).padStart(2, "0")}`,
@@ -113,7 +113,7 @@ export const lineItems = Array.from({ length: 6 }, (_, i) => ({
   name: ["표준품 A", "표준품 B", "부자재 C", "소모품 D", "외주 E", "기타 F"][i],
   spec: ["100×200", "Ø45", "KS-3등급", "Set", "-", "-"][i],
   unit: ["EA", "EA", "KG", "SET", "건", "EA"][i],
-  qty: [120, 80, 45, 12, 3, 240][i],
+  quantity: [120, 80, 45, 12, 3, 240][i],
   price: [12_500, 24_000, 8_900, 320_000, 1_200_000, 950][i],
 }))
 
@@ -145,10 +145,10 @@ export const kanban = [
   { key: "완료", items: rows.slice(11, 14) },
 ]
 
-export function won(n: number) {
+export function formatWon(n: number) {
   return `₩${n.toLocaleString("ko-KR")}`
 }
 
-export function num(n: number) {
+export function formatNumber(n: number) {
   return n.toLocaleString("ko-KR")
 }

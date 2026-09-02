@@ -12,7 +12,7 @@ import { FilterBar } from "@/components/erp/filter-bar"
 import { Page, Surface } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
 import { RecordTable } from "@/components/erp/record-table"
-import { CATEGORIES, rows, won } from "@/data/mock"
+import { CATEGORIES, rows, formatWon } from "@/data/mock"
 
 export function ListGrouped() {
   return (
@@ -44,7 +44,7 @@ export function ListGrouped() {
                   {category}
                   <Badge variant="secondary">{group.length}건</Badge>
                   <span className="ms-auto pe-2 text-xs text-muted-foreground tabular-nums">
-                    {won(sum)}
+                    {formatWon(sum)}
                   </span>
                 </span>
               </AccordionTrigger>
@@ -53,7 +53,7 @@ export function ListGrouped() {
                   <RecordTable
                     data={group}
                     selectable={false}
-                    columns={["code", "name", "owner", "status", "qty", "amount"]}
+                    columns={["code", "name", "owner", "status", "quantity", "amount"]}
                   />
                 </Surface>
               </AccordionContent>

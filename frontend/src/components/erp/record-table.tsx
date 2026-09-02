@@ -20,7 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { num, rows as allRows, statusVariant, won, type Row } from "@/data/mock"
+import { formatNumber, rows as allRows, statusVariant, formatWon, type Row } from "@/data/mock"
 
 export type ColumnKey =
   | "code"
@@ -28,7 +28,7 @@ export type ColumnKey =
   | "category"
   | "owner"
   | "status"
-  | "qty"
+  | "quantity"
   | "amount"
   | "date"
 
@@ -38,16 +38,16 @@ const LABEL: Record<ColumnKey, string> = {
   category: "구분",
   owner: "담당자",
   status: "상태",
-  qty: "수량",
+  quantity: "수량",
   amount: "금액",
   date: "등록일",
 }
 
-const NUMERIC: ColumnKey[] = ["qty", "amount"]
+const NUMERIC: ColumnKey[] = ["quantity", "amount"]
 
 export function RecordTable({
   data = allRows,
-  columns = ["code", "name", "category", "owner", "status", "qty", "amount", "date"],
+  columns = ["code", "name", "category", "owner", "status", "quantity", "amount", "date"],
   selectable = true,
   activeId,
   onRowClick,
@@ -108,9 +108,9 @@ export function RecordTable({
                 {c === "status" ? (
                   <Badge variant={statusVariant[row.status]}>{row.status}</Badge>
                 ) : c === "amount" ? (
-                  won(row.amount)
-                ) : c === "qty" ? (
-                  num(row.qty)
+                  formatWon(row.amount)
+                ) : c === "quantity" ? (
+                  formatNumber(row.quantity)
                 ) : (
                   row[c]
                 )}
@@ -125,7 +125,7 @@ export function RecordTable({
             <TableCell colSpan={(selectable ? 1 : 0) + columns.length - 1}>
               합계
             </TableCell>
-            <TableCell className="text-right tabular-nums">{won(total)}</TableCell>
+            <TableCell className="text-right tabular-nums">{formatWon(total)}</TableCell>
           </TableRow>
         </TableFooter>
       ) : null}
@@ -150,7 +150,7 @@ export function TableFooterBar({
       )}
     >
       <p className="text-xs text-muted-foreground tabular-nums">
-        총 {num(total)}건 · 1–18 표시
+        총 {formatNumber(total)}건 · 1–18 표시
       </p>
       {children}
       <Pagination className="mx-0 w-auto">

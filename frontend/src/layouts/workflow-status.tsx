@@ -16,7 +16,7 @@ import {
 import { Page, Surface } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
 import { DescriptionList } from "@/components/erp/stats"
-import { rows, timeline, won } from "@/data/mock"
+import { rows, timeline, formatWon } from "@/data/mock"
 
 const record = rows[1]
 
@@ -116,7 +116,7 @@ export function WorkflowStatus() {
                 { label: "문서번호", value: record.code },
                 { label: "명칭", value: record.name },
                 { label: "구분", value: record.category },
-                { label: "금액", value: won(record.amount) },
+                { label: "금액", value: formatWon(record.amount) },
                 {
                   label: "상태",
                   value: <Badge variant="default">{record.status}</Badge>,

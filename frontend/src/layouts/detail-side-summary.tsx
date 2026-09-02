@@ -10,7 +10,7 @@ import { Page, Surface } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
 import { RecordTable } from "@/components/erp/record-table"
 import { DescriptionList } from "@/components/erp/stats"
-import { num, rows, statusVariant, timeline, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, timeline, formatWon } from "@/data/mock"
 
 const record = rows[2]
 
@@ -55,7 +55,7 @@ export function DetailSideSummary() {
                   data={rows.slice(0, 5)}
                   selectable={false}
                   withTotal
-                  columns={["code", "name", "qty", "amount"]}
+                  columns={["code", "name", "quantity", "amount"]}
                 />
               </Surface>
             </CardContent>
@@ -93,13 +93,13 @@ export function DetailSideSummary() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">수량</span>
                 <span className="text-sm font-medium tabular-nums">
-                  {num(record.qty)}
+                  {formatNumber(record.quantity)}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">금액</span>
                 <span className="text-sm font-medium tabular-nums">
-                  {won(record.amount)}
+                  {formatWon(record.amount)}
                 </span>
               </div>
               <Separator />

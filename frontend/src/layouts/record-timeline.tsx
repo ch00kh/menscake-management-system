@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Page } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
 import { DescriptionList, StatCard } from "@/components/erp/stats"
-import { num, rows, statusVariant, timeline, won } from "@/data/mock"
+import { formatNumber, rows, statusVariant, timeline, formatWon } from "@/data/mock"
 
 const record = rows[4]
 
@@ -35,8 +35,8 @@ export function RecordTimeline() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="경과일" value="14일" hint="착수 2026-08-18" />
-        <StatCard label="수량" value={num(record.qty)} hint="단위 EA" />
-        <StatCard label="금액" value={won(record.amount)} hint="부가세 별도" />
+        <StatCard label="수량" value={formatNumber(record.quantity)} hint="단위 EA" />
+        <StatCard label="금액" value={formatWon(record.amount)} hint="부가세 별도" />
         <StatCard label="진행률" value={record.progress + "%"} hint="4단계 중 3단계" />
       </div>
 

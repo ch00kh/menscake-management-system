@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table"
 import { FullPage } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
-import { CATEGORIES, num } from "@/data/mock"
+import { CATEGORIES, formatNumber } from "@/data/mock"
 
 const MONTHS = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
 
@@ -92,11 +92,11 @@ export function ReportPivot() {
                   </TableCell>
                   {row.values.map((v, m) => (
                     <TableCell key={m} className="text-right tabular-nums">
-                      {num(v)}
+                      {formatNumber(v)}
                     </TableCell>
                   ))}
                   <TableCell className="text-right font-medium tabular-nums">
-                    {num(sum)}
+                    {formatNumber(sum)}
                   </TableCell>
                 </TableRow>
               )
@@ -109,11 +109,11 @@ export function ReportPivot() {
               </TableCell>
               {MONTHS.map((_, m) => (
                 <TableCell key={m} className="text-right tabular-nums">
-                  {num(matrix.reduce((sum, r) => sum + r.values[m], 0))}
+                  {formatNumber(matrix.reduce((sum, r) => sum + r.values[m], 0))}
                 </TableCell>
               ))}
               <TableCell className="text-right tabular-nums">
-                {num(
+                {formatNumber(
                   matrix.reduce(
                     (sum, r) => sum + r.values.reduce((a, b) => a + b, 0),
                     0

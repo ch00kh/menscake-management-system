@@ -13,7 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { FullPage } from "@/components/erp/page"
 import { PaneHeader } from "@/components/erp/page-header"
 import { DescriptionList } from "@/components/erp/stats"
-import { CATEGORIES, num, rows, statusVariant, won } from "@/data/mock"
+import { CATEGORIES, formatNumber, rows, statusVariant, formatWon } from "@/data/mock"
 
 export function ThreePane() {
   const [category, setCategory] = React.useState(CATEGORIES[0])
@@ -104,8 +104,8 @@ export function ThreePane() {
                   { label: "구분", value: active.category },
                   { label: "담당자", value: active.owner },
                   { label: "상태", value: active.status },
-                  { label: "수량", value: num(active.qty) },
-                  { label: "금액", value: won(active.amount) },
+                  { label: "수량", value: formatNumber(active.quantity) },
+                  { label: "금액", value: formatWon(active.amount) },
                   { label: "등록일", value: active.date },
                   { label: "진행률", value: active.progress + "%" },
                 ]}

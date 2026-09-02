@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/table"
 import { Page } from "@/components/erp/page"
 import { PageHeader } from "@/components/erp/page-header"
-import { lineItems, num, won } from "@/data/mock"
+import { lineItems, formatNumber, formatWon } from "@/data/mock"
 
-const total = lineItems.reduce((sum, item) => sum + item.qty * item.price, 0)
+const total = lineItems.reduce((sum, item) => sum + item.quantity * item.price, 0)
 const vat = Math.round(total * 0.1)
 
 export function DocumentView() {
@@ -103,13 +103,13 @@ export function DocumentView() {
                     {item.unit}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
-                    {num(item.qty)}
+                    {formatNumber(item.quantity)}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
-                    {num(item.price)}
+                    {formatNumber(item.price)}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
-                    {won(item.qty * item.price)}
+                    {formatWon(item.quantity * item.price)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -120,15 +120,15 @@ export function DocumentView() {
         <footer className="mt-6 flex justify-end">
           <dl className="grid w-64 grid-cols-2 gap-y-2 text-sm">
             <dt className="text-muted-foreground">공급가액</dt>
-            <dd className="text-right tabular-nums">{won(total)}</dd>
+            <dd className="text-right tabular-nums">{formatWon(total)}</dd>
             <dt className="text-muted-foreground">부가세</dt>
-            <dd className="text-right tabular-nums">{won(vat)}</dd>
+            <dd className="text-right tabular-nums">{formatWon(vat)}</dd>
             <dt className="col-span-2">
               <Separator />
             </dt>
             <dt className="font-medium">합계</dt>
             <dd className="text-right font-medium tabular-nums">
-              {won(total + vat)}
+              {formatWon(total + vat)}
             </dd>
           </dl>
         </footer>
