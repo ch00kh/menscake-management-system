@@ -2,16 +2,22 @@
 
 ERP 애플리케이션 저장소. 프런트엔드와 백엔드를 한 저장소에서 같이 개발합니다.
 
+백엔드 착수 전에 정할 것들은 [TODO.md](TODO.md)에 있습니다.
+
 ## 구성
 
 ```
+TODO.md       백엔드 착수 전 결정 목록
+              (1 컨벤션 → 2 도메인 → 3 스택 → 4 스택별 컨벤션 → 5 착수)
+
 frontend/     Vite + React + TypeScript + Tailwind v4 + shadcn/ui
               ERP 화면 레이아웃 30종. 자체 package.json / node_modules 를 가집니다.
               → frontend/README.md
 
 backend/      (예정) 설계 문서를 먼저 만들고 시작합니다.
 
-docs/         (예정) 설계 문서
+docs/         설계 문서
+              design/theme.md   시스템 테마 (송편)
 
 .claude/      Claude Code 스킬 (shadcn, migrate-radix-to-base)
 .agents/      에이전트용 스킬 사본
