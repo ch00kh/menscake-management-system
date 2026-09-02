@@ -17,6 +17,7 @@ frontend/     Vite + React + TypeScript + Tailwind v4 + shadcn/ui
 backend/      (예정) 설계 문서를 먼저 만들고 시작합니다.
 
 docs/         설계 문서
+              convention.md     컨벤션 (표기 · 케이스 · 값 표기 · git)
               design/theme.md   시스템 테마 (송편)
 
 .claude/      Claude Code 스킬 (shadcn, migrate-radix-to-base)
