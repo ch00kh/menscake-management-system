@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom"
-
 import {
   Empty,
   EmptyDescription,
@@ -10,8 +8,12 @@ import {
 import { SearchXIcon } from "lucide-react"
 import { getLayout } from "@/layouts/registry"
 
-export function LayoutPage() {
-  const { slug } = useParams()
+/**
+ * slug 는 `tab-resolve.tsx` 가 경로에서 뽑아 넘긴다. useParams 를 쓰지 않는
+ * 이유: 탭 여러 개가 동시에 마운트돼 있고, 라우트 매칭은 활성 탭 하나에만
+ * 해당하므로 숨은 탭이 잘못된 slug 를 읽게 된다.
+ */
+export function LayoutPage({ slug }: { slug?: string }) {
   const layout = getLayout(slug)
 
   if (!layout) {

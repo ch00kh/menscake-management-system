@@ -4,15 +4,12 @@ import {
   ChevronRightIcon,
   FileEditIcon,
   FileTextIcon,
-  LayersIcon,
   LayoutGridIcon,
   ListIcon,
   NetworkIcon,
-  SettingsIcon,
   WorkflowIcon,
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
-
 import {
   Collapsible,
   CollapsibleContent,
@@ -31,10 +28,9 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarRail,
 } from "@/components/ui/sidebar"
+import { MENU_LAYOUTS, MENU_ROOT } from "@/app/menu"
 import { layoutGroups, layouts, type LayoutGroup } from "@/layouts/registry"
-
 const GROUP_ICON: Record<LayoutGroup, typeof ListIcon> = {
   "목록 · 검색": ListIcon,
   "상세 · 편집": FileTextIcon,
@@ -43,22 +39,17 @@ const GROUP_ICON: Record<LayoutGroup, typeof ListIcon> = {
   "프로세스 · 워크플로": WorkflowIcon,
   "마스터 · 구조": NetworkIcon,
 }
-
 /** 4단계까지 중첩되므로 기본 들여쓰기로는 폭이 부족하다. 단계별로 좁혀 쓴다. */
 const SUB_L2 = "mx-2 px-2"
 const SUB_NESTED = "mx-1 px-1"
-
 export function AppSidebar() {
   const { pathname } = useLocation()
-
   const activeGroup = layouts.find(
     (layout) => pathname === "/layouts/" + layout.slug
   )?.group
-
   const [openGroups, setOpenGroups] = React.useState<
     Partial<Record<LayoutGroup, boolean>>
   >(() => (activeGroup ? { [activeGroup]: true } : {}))
-
   // 다른 그룹의 레이아웃으로 이동하면 해당 그룹을 자동으로 펼친다.
   // (사용자가 직접 접은 그룹은 그대로 두기 위해 렌더 중 보정 패턴을 사용한다.)
   const [lastActiveGroup, setLastActiveGroup] = React.useState(activeGroup)
@@ -68,9 +59,8 @@ export function AppSidebar() {
       setOpenGroups((prev) => ({ ...prev, [activeGroup]: true }))
     }
   }
-
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -83,7 +73,7 @@ export function AppSidebar() {
                 <LayoutGridIcon className="size-4" />
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
-                <span className="font-heading font-semibold">ERP Layouts</span>
+                <span className="font-serif font-semibold">ERP Layouts</span>
                 <span className="text-xs text-muted-foreground">
                   {layouts.length}종 · shadcn/ui
                 </span>
@@ -92,7 +82,6 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -101,13 +90,12 @@ export function AppSidebar() {
               <Collapsible defaultOpen>
                 <SidebarMenuItem>
                   <CollapsibleTrigger
-                    render={<SidebarMenuButton tooltip="환경설정" />}
+                    render={<SidebarMenuButton tooltip={MENU_ROOT.label} />}
                   >
-                    <SettingsIcon />
-                    <span>환경설정</span>
+                    <MENU_ROOT.icon />
+                    <span>{MENU_ROOT.label}</span>
                     <ChevronRightIcon className="ms-auto transition-transform group-data-panel-open/menu-button:rotate-90" />
                   </CollapsibleTrigger>
-
                   <CollapsibleContent>
                     <SidebarMenuSub className={SUB_L2}>
                       {/* 2단계: 레이아웃 */}
@@ -121,11 +109,10 @@ export function AppSidebar() {
                               />
                             }
                           >
-                            <LayersIcon />
-                            <span>레이아웃</span>
+                            <MENU_LAYOUTS.icon />
+                            <span>{MENU_LAYOUTS.label}</span>
                             <ChevronRightIcon className="ms-auto transition-transform group-data-panel-open/layouts:rotate-90" />
                           </CollapsibleTrigger>
-
                           <CollapsibleContent>
                             <SidebarMenuSub className={SUB_NESTED}>
                               {/* 3단계: 레이아웃 그룹 */}
@@ -160,7 +147,6 @@ export function AppSidebar() {
                                         </span>
                                         <ChevronRightIcon className="ms-auto transition-transform group-data-panel-open/group:rotate-90" />
                                       </CollapsibleTrigger>
-
                                       <CollapsibleContent>
                                         {/* 4단계: 레이아웃 항목 */}
                                         <SidebarMenuSub className={SUB_NESTED}>
@@ -209,7 +195,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -220,7 +205,6 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }
