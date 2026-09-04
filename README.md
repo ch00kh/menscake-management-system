@@ -17,10 +17,14 @@ frontend/     Vite + React + TypeScript + Tailwind v4 + shadcn/ui
 backend/      (예정) 설계 문서를 먼저 만들고 시작합니다.
 
 docs/         설계 문서
-              convention.md     컨벤션 (표기 · 케이스 · 값 표기 · git)
-              design/theme.md   시스템 테마 (송편)
-              domain/scope.md   도메인 범위와 순서
-              domain/prior-design-2026-09-02.md   이전 초안 (보관)
+              adr/                  결정 기록. TODO 단계와 1:1 (001~004)
+              convention.md         컨벤션 — 스택과 무관한 것
+              convention-stack.md   컨벤션 — 스택 종속
+              stack.md              기술 스택과 근거
+              sizing.md             데이터 규모 추정
+              operations.md         운영 규칙 (백업 · 접근통제 · 접속기록)
+              design/theme.md       시스템 테마 (송편)
+              domain/               도메인 9개 + glossary.md + scope.md
 
 .claude/      Claude Code 스킬 (shadcn, migrate-radix-to-base)
 .agents/      에이전트용 스킬 사본
