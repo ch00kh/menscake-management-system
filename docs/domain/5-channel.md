@@ -238,6 +238,5 @@ UNIQUE (channel_id, channel_product_code, channel_option_text)
 6번 **주문**. 원래 목적입니다.
 
 여기서 정할 것 — 상태 목록 · 개인정보(수령인) 정책 · 재import 시 컬럼 소유권 ·
-취소 감지 · 낙관적 잠금. 이전 초안
-([prior-design-2026-09-02.md](prior-design-2026-09-02.md))에 밀도 높은 안이 있고
-[scope.md](scope.md) 4장에서 "살림"으로 판정해뒀습니다. 그걸 출발점으로 씁니다.
+취소 감지 · 낙관적 잠금. 2026-09-02 초안에서 "살림"으로 판정한 규칙들이 있고
+([scope.md](scope.md) 5장) 그걸 출발점으로 씁니다.

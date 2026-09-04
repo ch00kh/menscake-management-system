@@ -233,9 +233,8 @@ theme_mode      'light' | 'dark' | 'system'
 
 ## 6. Supabase를 안 쓴 이유
 
-이전 초안([domain/prior-design-2026-09-02.md](domain/prior-design-2026-09-02.md))이
-Supabase를 확정으로 잡았고, [domain/scope.md](domain/scope.md) 4장에서 "살림 —
-3단계의 출발점"으로 판정했습니다. **출발점으로 쓰되 채택하지는 않았습니다.**
+2026-09-02 초안이 Supabase를 확정으로 잡았고,
+[domain/scope.md](domain/scope.md) 5장에서 "3단계의 출발점"으로 판정했습니다. **출발점으로 쓰되 채택하지는 않았습니다.**
 
 **범위가 달라졌습니다.** 초안의 v1은 주문 취합 하나였습니다. 지금은 도메인 9개고 그
 사이에 트랜잭션 로직이 생겼습니다.

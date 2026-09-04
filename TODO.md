@@ -27,9 +27,8 @@
 - [x] 원격 저장소 생성 → `master` 를 `main` 으로 → `dev` 분기.
       `origin` = `ch00kh/menscake-management-system`. `main` · `dev` 둘 다 원격에 있고
       로컬이 각각 추적합니다 ([docs/convention/git.md](docs/convention/git.md) 1.1)
-- [x] 이전 설계 초안 검토 후 살릴 부분 결정
-      → 저장소로 옮겨 보관: [docs/domain/prior-design-2026-09-02.md](docs/domain/prior-design-2026-09-02.md).
-      살린 것과 버린 것은 [docs/domain/scope.md](docs/domain/scope.md) 4장
+- [x] 이전 설계 초안 검토 후 살릴 부분 결정 — 살릴 것을 현행 문서로 옮기고
+      초안 원문은 지웠습니다. 판정표는 [docs/domain/scope.md](docs/domain/scope.md) 5장
 
 ## 2. 도메인 — 1단계 규칙을 적용해서 작성
 
