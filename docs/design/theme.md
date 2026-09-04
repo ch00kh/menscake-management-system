@@ -218,8 +218,8 @@ ERP는 상태 구분이 핵심입니다. 상태색은 **팔레트와 무관하�
 컬럼은 **두 개로 나눕니다.**
 
 ```sql
-users.theme_palette  varchar   -- 'sugg' | 'chija' | 'baengnyeoncho'
-users.theme_mode     varchar   -- 'light' | 'dark' | 'system'
+account.theme_palette  varchar   -- 'sugg' | 'chija' | 'baengnyeoncho'
+account.theme_mode     varchar   -- 'light' | 'dark' | 'system'
 ```
 
 한 컬럼에 `'chija-dark'`처럼 합치면 조합이 곱으로 늘고, "시스템 설정 따름"을 표현할

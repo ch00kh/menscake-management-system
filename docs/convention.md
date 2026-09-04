@@ -14,18 +14,19 @@
 
 ### 1.1 번역이 아니라 지정
 
-"수주"를 누구는 `order`, 누구는 `salesOrder`, 누구는 `receiveOrder`로 적으면 끝입니다.
+"수주"를 누구는 `salesOrder`, 누구는 `salesOrder`, 누구는 `receiveOrder`로 적으면 끝입니다.
 **용어사전에 1:1로 등록하고, 등록된 값만 씁니다.**
 
 ```
-수주   salesOrder
-발주   purchaseOrder
-거래처 partner
-전표   voucher
-품목   item
+주문     sales_order
+발주     purchase_order
+거래처   partner
+옵션조합 product_variant
+판매처   sales_channel
 ```
 
-용어사전은 `docs/domain/glossary.md`에 둡니다 (2단계에서 채웁니다).
+용어사전은 [docs/domain/glossary.md](domain/glossary.md)에 있습니다. **표기는 `snake_case`가
+정본**이고 코드 식별자는 그 camelCase 변환형입니다 ([convention-stack.md](convention-stack.md) 3장).
 
 **사전에 없는 업무용어는 코드에 쓰기 전에 사전에 먼저 추가합니다.** 이 순서를 어기면
 사전이 코드를 못 따라가고, 그때부터 사전은 아무도 안 봅니다.
@@ -147,7 +148,7 @@ salesOrderNo  VARCHAR   업무번호. 사람이 부르는 이름
 
 ```
 createdAt   TIMESTAMPTZ   생성 시각
-createdBy   BIGINT        생성자 (users.id)
+createdBy   BIGINT        생성자 (account.id)
 updatedAt   TIMESTAMPTZ   수정 시각
 updatedBy   BIGINT        수정자
 deletedAt   TIMESTAMPTZ   삭제 시각. NULL 이면 살아 있음
@@ -159,6 +160,19 @@ deletedAt   TIMESTAMPTZ   삭제 시각. NULL 이면 살아 있음
 **예외는 개인정보입니다.** 거래처 담당자 연락처처럼 보관 기간이 정해진 데이터는 기간이
 지나면 실제로 지워야 합니다. 논리 삭제만 하면 데이터가 그대로 남아 의무 위반입니다.
 어느 테이블이 여기 해당하는지는 도메인이 정해지는 **2단계에서 하나씩 지정**합니다.
+
+지금까지 지정된 것:
+
+| 테이블 | 규칙 |
+|---|---|
+| `partnerContact` 거래처 담당자 | `deletedAt` 없음. 물리 삭제. 거래처 미사용 후 3년(설정값) 자동 파기 → [domain/3-partner.md](domain/3-partner.md) 3장 |
+| `salesOrder` 수령인 5종 | 행은 남기고 **컬럼만 NULL로.** 출고완료 후 5년(설정값) → [domain/6-order.md](domain/6-order.md) 7장 |
+
+두 규칙이 다른 이유: 거래처 담당자는 행 전체가 개인정보지만, 주문은 행 안의 다섯
+칸만 개인정보이고 나머지(금액·상품·수량)는 집계에 계속 필요합니다.
+
+**파기 대상은 이력에도 남기지 않습니다.** 본체를 지워도 이력에 남으면 파기가
+아닙니다 — 변경 이력의 기록 항목을 화이트리스트로 두는 이유입니다.
 
 기준정보처럼 이력이 필요 없는 테이블은 `deletedAt` 대신 `active BOOLEAN`으로 갈 수도
 있습니다. 이것도 2단계에서 테이블별로 정합니다.
@@ -190,9 +204,14 @@ deletedAt   TIMESTAMPTZ   삭제 시각. NULL 이면 살아 있음
 
 ```
 docs/
-  convention.md          이 문서
+  convention.md          이 문서 — 스택과 무관한 규칙
+  convention-stack.md    스택 종속 규칙
+  stack.md               기술 스택과 근거
+  sizing.md              데이터 규모 추정
+  operations.md          운영 규칙 (백업 · 접근통제 · 접속기록)
+  adr/                   결정 기록. TODO 단계와 1:1
   design/theme.md        여러 문서가 생길 주제는 하위 폴더
-  domain/glossary.md     (2단계)
+  domain/                도메인 9개 + glossary.md + scope.md
 ```
 
 - 단일 문서는 `docs/` 바로 아래, 늘어날 주제는 하위 폴더
