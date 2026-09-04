@@ -21,7 +21,9 @@
 - [x] 문서 규칙: 위치(`docs/`), 파일명, 다이어그램 도구
       → `docs/` 아래. 단일 문서는 바로, 늘어날 주제는 하위 폴더. 다이어그램은 Mermaid
 - [x] git 규칙: 브랜치 전략, 커밋 메시지, PR 단위
-- [ ] 원격 저장소 생성 → `master` 를 `main` 으로 → `dev` 분기 (사용자가 직접 붙일 예정)
+- [x] 원격 저장소 생성 → `master` 를 `main` 으로 → `dev` 분기.
+      `origin` = `ch00kh/menscake-management-system`. `main` · `dev` 둘 다 원격에 있고
+      로컬이 각각 추적합니다 ([docs/convention.md](docs/convention.md) 6.1.1)
 - [x] 이전 설계 초안 검토 후 살릴 부분 결정
       → 저장소로 옮겨 보관: [docs/domain/prior-design-2026-09-02.md](docs/domain/prior-design-2026-09-02.md).
       살린 것과 버린 것은 [docs/domain/scope.md](docs/domain/scope.md) 4장
