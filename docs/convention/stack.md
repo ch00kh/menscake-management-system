@@ -1,9 +1,9 @@
 # 컨벤션 — 스택 종속
 
-[TODO.md](../TODO.md) 4단계. 스택이 정해져야 쓸 수 있는 규칙입니다
-([stack.md](stack.md): Java 21 · Spring Boot 3 · PostgreSQL · JPA + QueryDSL · Gradle).
+[TODO.md](../../TODO.md) 4단계. 스택이 정해져야 쓸 수 있는 규칙입니다
+([stack.md](../stack.md): Java 21 · Spring Boot 3 · PostgreSQL · JPA + QueryDSL · Gradle).
 
-스택과 **무관한** 규칙은 [convention.md](convention.md)에 있고 그대로 유효합니다.
+스택과 **무관한** 규칙은 [convention.md](core.md)에 있고 그대로 유효합니다.
 표기 · 케이스 · 값 표기 · 감사 컬럼 · 문서 · git.
 
 ---
@@ -147,7 +147,7 @@ Spring Boot 3에 내장된 `application/problem+json`을 씁니다.
 
 ### 2.3 벌크는 부분 성공을 그대로 내려줍니다
 
-6번에서 정한 규칙([6-order.md](domain/6-order.md) 6장)의 표현입니다.
+6번에서 정한 규칙([6-order.md](../domain/6-order.md) 6장)의 표현입니다.
 
 ```json
 {
@@ -172,7 +172,7 @@ GET /api/sales-orders?page=0&size=50&sort=ordered_at,desc
 ```
 
 - offset 기반. 커서는 안 씁니다 — 실무 조회가 최근 30일이라 깊은 페이지가 없습니다
-  ([sizing.md](sizing.md) 4.2)
+  ([sizing.md](../sizing.md) 4.2)
 - `size` 상한 **200**. 넘으면 400
 - 대량 내보내기는 페이징이 아니라 **스트리밍**입니다
 
@@ -186,7 +186,7 @@ GET /api/sales-orders?page=0&size=50&sort=ordered_at,desc
 | 코드값 | 저장값 그대로 — `"SHIPPED"`. 표시명은 프런트 매핑 |
 | 없는 값 | 필드를 생략하지 않고 `null` 명시 |
 
-**금액을 문자열로 내리는 이유**는 [convention.md](convention.md) 3.2입니다. JSON
+**금액을 문자열로 내리는 이유**는 [convention.md](core.md) 3.2입니다. JSON
 숫자로 내리면 JavaScript가 `number`로 받아 정밀도를 잃습니다.
 
 **필드를 생략하지 않는 이유**는 생성된 타입이 전부 옵셔널이 되어 쓸모없어지기
@@ -198,7 +198,7 @@ GET /api/sales-orders?page=0&size=50&sort=ordered_at,desc
 
 ### 3.1 소문자 snake_case
 
-**용어사전이 정본입니다** ([domain/glossary.md](domain/glossary.md)). 거기 등록된
+**용어사전이 정본입니다** ([domain/glossary.md](../domain/glossary.md)). 거기 등록된
 이름이 그대로 테이블·컬럼명입니다.
 
 ```
@@ -351,7 +351,7 @@ Flyway가 체크섬을 봅니다. 이미 운영에 적용된 파일을 고치면
 
 ### 4.4 실행 계정과 시드
 
-- **`migrator` 계정으로만** 실행합니다 ([operations.md](operations.md) 3.1)
+- **`migrator` 계정으로만** 실행합니다 ([operations.md](../operations.md) 3.1)
 - 시드도 마이그레이션입니다 — `ADMIN` 역할 · 초기 관리자 계정 · 기본창고 ·
   메뉴 트리 초기값
 - **테스트도 같은 마이그레이션을 태웁니다.** 별도 스키마 스크립트를 만들지
@@ -394,15 +394,15 @@ Flyway가 체크섬을 봅니다. 이미 운영에 적용된 파일을 고치면
 
 | # | 무엇 | 근거 |
 |---|---|---|
-| 1 | 취소 감지는 `canceled_at IS NULL`일 때만 발화 — 재import 2회에 값이 안 바뀜 | [6-order.md](domain/6-order.md) 5.1 |
+| 1 | 취소 감지는 `canceled_at IS NULL`일 때만 발화 — 재import 2회에 값이 안 바뀜 | [6-order.md](../domain/6-order.md) 5.1 |
 | 2 | 재import가 `status` · `assignee_id` · `memo`를 보존 | 6-order 4.1 |
 | 3 | `receiver_purged_at`이 있으면 수령인을 덮어쓰지 않음 | 6-order 4.2 |
 | 4 | 벌크 20건 중 3건 stale → 17건 반영 + 3건 실패 목록 | 6-order 6장 |
-| 5 | 실사 중 출고가 있어도 기준 시각 차이 계산이 맞음 | [8-stock.md](domain/8-stock.md) 2.1 |
-| 6 | 세트 출고가 구성품으로 전개돼 차감됨 | [7-shipping.md](domain/7-shipping.md) 3.1 |
+| 5 | 실사 중 출고가 있어도 기준 시각 차이 계산이 맞음 | [8-stock.md](../domain/8-stock.md) 2.1 |
+| 6 | 세트 출고가 구성품으로 전개돼 차감됨 | [7-shipping.md](../domain/7-shipping.md) 3.1 |
 | 7 | 부분 유니크 3건이 실제로 막음 | 3.6 |
-| 8 | 발주 상태가 `ORDERED → PARTIAL → COMPLETED`로 자동 전이 | [4-receiving.md](domain/4-receiving.md) 3.3 |
-| 9 | `ADMIN` 활성 사용자를 0명으로 만들 수 없음 | [1-user.md](domain/1-user.md) 2.2 |
+| 8 | 발주 상태가 `ORDERED → PARTIAL → COMPLETED`로 자동 전이 | [4-receiving.md](../domain/4-receiving.md) 3.3 |
+| 9 | `ADMIN` 활성 사용자를 0명으로 만들 수 없음 | [1-user.md](../domain/1-user.md) 2.2 |
 
 프런트는 vitest입니다. 현재 0건입니다.
 
@@ -427,4 +427,4 @@ pre-commit 훅은 두지 않습니다. 우회가 쉽고, **진실은 CI에 있�
 
 ## 8. 다음
 
-[TODO.md](../TODO.md) 5단계 **착수**. `backend/` 스캐폴딩과 수직 슬라이스 하나입니다.
+[TODO.md](../../TODO.md) 5단계 **착수**. `backend/` 스캐폴딩과 수직 슬라이스 하나입니다.

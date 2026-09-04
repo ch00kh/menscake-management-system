@@ -1,7 +1,7 @@
 # 용어사전
 
 업무용어(한글) ↔ 식별자(영문)의 **1:1 등록부**입니다. 번역이 아니라 지정입니다 —
-여기 등록된 값만 씁니다. 규칙은 [convention.md](../convention.md) 1장.
+여기 등록된 값만 씁니다. 규칙은 [convention/core.md](../convention/core.md) 1장.
 
 **사전에 없는 업무용어는 코드에 쓰기 전에 여기 먼저 추가합니다.** 도메인을 하나 설계할
 때마다 그 도메인의 용어를 아래에 붙입니다.
@@ -9,7 +9,7 @@
 > **표기는 `snake_case`가 정본입니다.** DB 물리명이 그대로 여기 들어옵니다.
 > Java 필드와 TypeScript 속성은 이걸 camelCase로 바꾼 것이고, 변환은 기계적이라
 > 사전에 따로 적지 않습니다 (`sales_order_no` ↔ `salesOrderNo`).
-> 근거는 [convention-stack.md](../convention-stack.md) 3장.
+> 근거는 [convention/stack.md](../convention/stack.md) 3장.
 
 ---
 

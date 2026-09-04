@@ -3,7 +3,7 @@
 세 번째 도메인입니다. 입고 전표(4번)가 "어디서 받았는지"로 이걸 참조합니다.
 
 그리고 **이 프로젝트에서 논리 삭제 기본값을 깨는 첫 번째 테이블**이 여기 있습니다
-([convention.md](../convention.md) 4.3이 2단계로 미뤄뒀던 개인정보 지정).
+([convention/core.md](../convention/core.md) 4.3이 2단계로 미뤄뒀던 개인정보 지정).
 
 용어는 [glossary.md](glossary.md), 순서는 [scope.md](scope.md)에 있습니다.
 

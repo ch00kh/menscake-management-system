@@ -134,7 +134,7 @@ create unique index ux_shipment_sales_order__active
 ```
 
 3.4에서 출고를 취소할 때 이 값을 같이 세웁니다. 근거는
-[convention-stack.md](../convention-stack.md) 3.6.
+[convention/stack.md](../convention/stack.md) 3.6.
 
 ---
 

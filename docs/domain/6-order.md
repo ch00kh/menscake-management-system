@@ -308,7 +308,7 @@ AND canceled_at IS NULL 이면
 
 ## 7. 수령인 정보 파기
 
-[convention.md](../convention.md) 4.3의 **두 번째 지정 대상**입니다
+[convention/core.md](../convention/core.md) 4.3의 **두 번째 지정 대상**입니다
 (첫 번째는 `partner_contact`).
 
 | | |
@@ -335,7 +335,7 @@ AND canceled_at IS NULL 이면
 | 문서 | 변화 |
 |---|---|
 | [5-channel.md](5-channel.md) | `channel_cancel_status` 테이블 추가 (취소로 간주할 문자열) |
-| [convention.md](../convention.md) | 4.3 개인정보 지정표에 `sales_order` 수령인 5종 추가 |
+| [convention/core.md](../convention/core.md) | 4.3 개인정보 지정표에 `sales_order` 수령인 5종 추가 |
 | [scope.md](scope.md) | 4장의 "상태 값 목록 미확정" → 확정 |
 
 ---

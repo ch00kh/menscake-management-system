@@ -3,7 +3,7 @@
 첫 번째 도메인입니다. 모든 업무 테이블의 감사 컬럼(`created_by` · `updated_by`)이 여기를
 참조하므로 이게 없으면 아무것도 못 만듭니다.
 
-범위와 순서는 [scope.md](scope.md), 표기·값 규칙은 [convention.md](../convention.md),
+범위와 순서는 [scope.md](scope.md), 표기·값 규칙은 [convention/core.md](../convention/core.md),
 용어는 [glossary.md](glossary.md)에 있습니다.
 
 여기서 정한 것은 **스택과 무관한 것만**입니다. 세션 방식 · 토큰 · 해시 알고리즘 ·
@@ -114,7 +114,7 @@ DB가 마스터이므로 관리자가 메뉴를 추가하고 순서를 바꿉니
 
 **(a) `menu_code`는 불변입니다.** 재사용 금지 · 재배치 금지. 권한 행이 이 값을 가리키고
 있어서, 코드를 재사용하면 지운 메뉴의 권한이 새 메뉴에 그대로 붙습니다. 레이아웃 번호와
-같은 취급입니다 ([convention.md](../convention.md) 4.4).
+같은 취급입니다 ([convention/core.md](../convention/core.md) 4.4).
 
 **(b) 화면은 코드에 있습니다.** `path`가 가리키는 화면이 코드에 없으면 그 메뉴는
 사이드바에 **렌더링하지 않고 경고 로그를 남깁니다.** DB에서 메뉴를 먼저 만들고 화면을
@@ -143,7 +143,7 @@ UNIQUE (role_id, menu_id, action)
 값 하나만 늘리면 됩니다. 테이블 모양은 그대로입니다.
 
 `action` 저장은 영문 SCREAMING_SNAKE, 표시는 한글 매핑입니다
-(조회 · 등록 · 수정 · 삭제) — [convention.md](../convention.md) 3.3.
+(조회 · 등록 · 수정 · 삭제) — [convention/core.md](../convention/core.md) 3.3.
 
 ---
 

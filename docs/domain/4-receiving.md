@@ -6,7 +6,7 @@
 [scope.md](scope.md) 3장이 "4번에서 확정한다"고 미뤄둔 **8번 재고와의 경계**를
 여기서 닫습니다.
 
-용어는 [glossary.md](glossary.md), 표기·값 규칙은 [convention.md](../convention.md)에
+용어는 [glossary.md](glossary.md), 표기·값 규칙은 [convention/core.md](../convention/core.md)에
 있습니다.
 
 ---
@@ -106,7 +106,7 @@ UNIQUE (variant_id, lot_no)
 - **켠 상품**: 입고할 때 로트를 만들거나 고릅니다. 재고는 `(조합, 창고, 로트)`로 셉니다
 - **끈 상품**: `lot_id`가 `NULL`입니다. 재고는 `(조합, 창고)`로 셉니다
 
-기한이 `DATE`인 이유는 [convention.md](../convention.md) 3.1 — 시각을 붙이면
+기한이 `DATE`인 이유는 [convention/core.md](../convention/core.md) 3.1 — 시각을 붙이면
 자정 경계에서 하루 밀립니다.
 
 ### 3.3 발주 `purchase_order` · `purchase_order_line`
@@ -301,7 +301,7 @@ lot_no             입력 없으면 입고일자 + 순번   20260903-01
 warehouse_code     수기 입력
 ```
 
-연도별 리셋은 [convention.md](../convention.md) 4.2가 PK와 업무번호를 분리해둔 덕에
+연도별 리셋은 [convention/core.md](../convention/core.md) 4.2가 PK와 업무번호를 분리해둔 덕에
 가능합니다. 번호가 매년 1로 돌아가도 FK는 아무것도 안 건드립니다.
 
 ---

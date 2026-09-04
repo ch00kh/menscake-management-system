@@ -173,7 +173,7 @@ UNIQUE (channel_id, channel_product_code, channel_option_text)
 중간에 터지는 것보다 시작 전에 막는 게 낫습니다.
 
 > **수령인 정보는 개인정보입니다.** 보관·파기 정책은 6번 주문에서 정합니다
-> ([convention.md](../convention.md) 4.3의 지정 대상). 여기서는 매핑 키만 정의합니다.
+> ([convention/core.md](../convention/core.md) 4.3의 지정 대상). 여기서는 매핑 키만 정의합니다.
 
 ---
 

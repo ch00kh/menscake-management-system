@@ -12,7 +12,7 @@
 
 ## 1. 컨벤션 — 스택과 무관한 것. 지금 바로
 
-> 확정됐습니다. 규칙 전체는 [docs/convention.md](docs/convention.md).
+> 확정됐습니다. 규칙 전체는 [docs/convention/core.md](docs/convention/core.md).
 
 - [x] **표기 규칙**: 업무용어(한글) ↔ 코드 식별자(영문) 변환 규칙, 축약어 허용 여부와 사전
 - [x] 식별자 케이스 규칙 (엔티티 · 필드 · 상수 · 파일명)
@@ -21,9 +21,12 @@
 - [x] 문서 규칙: 위치(`docs/`), 파일명, 다이어그램 도구
       → `docs/` 아래. 단일 문서는 바로, 늘어날 주제는 하위 폴더. 다이어그램은 Mermaid
 - [x] git 규칙: 브랜치 전략, 커밋 메시지, PR 단위
+- [ ] **GitHub `main` 브랜치 보호 켜기** — 직접 푸시 금지 + PR 필수.
+      규칙은 정했지만([docs/convention/git.md](docs/convention/git.md) 3.1)
+      설정을 켜야 실제로 강제됩니다
 - [x] 원격 저장소 생성 → `master` 를 `main` 으로 → `dev` 분기.
       `origin` = `ch00kh/menscake-management-system`. `main` · `dev` 둘 다 원격에 있고
-      로컬이 각각 추적합니다 ([docs/convention.md](docs/convention.md) 6.1.1)
+      로컬이 각각 추적합니다 ([docs/convention/git.md](docs/convention/git.md) 1.1)
 - [x] 이전 설계 초안 검토 후 살릴 부분 결정
       → 저장소로 옮겨 보관: [docs/domain/prior-design-2026-09-02.md](docs/domain/prior-design-2026-09-02.md).
       살린 것과 버린 것은 [docs/domain/scope.md](docs/domain/scope.md) 4장
@@ -122,7 +125,7 @@
 
 ## 4. 컨벤션 — 스택에 종속된 것
 
-> 확정됐습니다. 규칙 전체는 [docs/convention-stack.md](docs/convention-stack.md).
+> 확정됐습니다. 규칙 전체는 [docs/convention/stack.md](docs/convention/stack.md).
 
 - [x] 패키지 구조 — **도메인별 + 유스케이스 계층.** `api → usecase → domain ← infra`,
       읽기는 `api → query`. `@Transactional` 은 유스케이스에만
@@ -135,7 +138,7 @@
       덤으로 `purchase_order`(발주)와 대칭이 됐습니다
 - [x] **코드값은 Postgres enum 대신 `varchar` + `CHECK`** — `source_type` 이 설계
       도중 3→4→5 로 늘었습니다. `ALTER TYPE` 은 값을 지울 수 없습니다
-- [x] **부분 유니크 인덱스 3건** — SQL 은 convention-stack.md 3.6
+- [x] **부분 유니크 인덱스 3건** — SQL 은 convention/stack.md 3.6
       - `stock` — `lot_id` NULL 여부로 인덱스 둘
       - `stocktaking_line` — 같은 모양
       - `shipment_sales_order` — **`canceled` 컬럼을 새로 둡니다.** 취소 여부가
@@ -146,7 +149,7 @@
 - [x] 프런트 타입 생성 — springdoc → `openapi.json` → `openapi-typescript`.
       **생성물을 커밋**하고 CI 에서 diff 나면 실패
 - [x] 테스트 구조 — 단위(DB 없음) + 통합(Testcontainers Postgres). H2 금지.
-      **필수 회귀 9건 목록**은 convention-stack.md 6.2
+      **필수 회귀 9건 목록**은 convention/stack.md 6.2
 - [x] 린트 · 포맷 — Spotless + google-java-format(AOSP, 4칸) / 프런트는 기존 유지.
       pre-commit 훅 없이 빌드에서 검사
 

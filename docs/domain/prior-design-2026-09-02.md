@@ -122,7 +122,7 @@
   목록 반환 + 그 행만 재시도** 버튼. 핵심 기능이 벌크이므로 전체 롤백은 쓸 수 없다.
 
 > 현행: [ADR-002](../adr/ADR-002-도메인.md) 2.15 · 2.16 · 2.17.
-> 이 규칙들은 [convention-stack.md](../convention-stack.md) 6.2의 필수 회귀 테스트
+> 이 규칙들은 [convention/stack.md](../convention/stack.md) 6.2의 필수 회귀 테스트
 > 1~4번이 됐습니다.
 
 ## 8. 성공 기준
@@ -135,7 +135,7 @@
 4. **취소된 주문이 출고 지시로 뜨지 않는다.** 한 번이라도 나면 신뢰가 죽는다.
    회귀 테스트로 고정한다.
 
-> 4번의 회귀 테스트가 [convention-stack.md](../convention-stack.md) 6.2의 1번입니다.
+> 4번의 회귀 테스트가 [convention/stack.md](../convention/stack.md) 6.2의 1번입니다.
 
 ## 9. 화면 재사용에 대한 정정 — 5단계 구현 때 유효
 

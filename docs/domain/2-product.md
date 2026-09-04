@@ -3,7 +3,7 @@
 두 번째 도메인입니다. 입고 전표 · 주문 라인 · 재고가 전부 여기서 정한 **단위**를
 참조하므로, 이걸 잘못 잡으면 뒤에서 못 고칩니다.
 
-용어는 [glossary.md](glossary.md), 표기·값 규칙은 [convention.md](../convention.md),
+용어는 [glossary.md](glossary.md), 표기·값 규칙은 [convention/core.md](../convention/core.md),
 순서는 [scope.md](scope.md)에 있습니다.
 
 ---
@@ -115,7 +115,7 @@ memo          TEXT      NULL 허용
 > `(조합, 창고, 로트)`로 셉니다 → [4-receiving.md](4-receiving.md) 3.2.
 
 `sell_status` 표시 매핑 — 판매중 · 판매중지 · 단종
-([convention.md](../convention.md) 3.3).
+([convention/core.md](../convention/core.md) 3.3).
 
 셋을 나눈 이유는 뒤에서 다르게 처리하기 때문입니다. **판매중지**는 재고가 있는데 잠깐
 안 파는 것이라 재고 실사 대상이고, **단종**은 소진 후 정리 대상입니다. 하나로 합치면

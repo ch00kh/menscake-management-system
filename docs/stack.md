@@ -167,7 +167,7 @@ QueryDSL의 애노테이션 프로세서 설정이 Gradle 쪽 사례가 훨씬 �
 ## 3. 배포 구조
 
 서버 두 대. `dev` 브랜치가 개발, `main`이 운영입니다
-([convention.md](convention.md) 6장).
+([convention/git.md](convention/git.md) 1장).
 
 ```
 [서버 1대]
@@ -275,7 +275,7 @@ Supabase를 확정으로 잡았고, [domain/scope.md](domain/scope.md) 4장에�
 
 ## 7. 다음
 
-4단계 **스택 종속 컨벤션**은 [convention-stack.md](convention-stack.md)에서
+4단계 **스택 종속 컨벤션**은 [convention/stack.md](convention/stack.md)에서
 확정됐습니다 — 패키지 구조 · API 규격 · 물리 네이밍 · 마이그레이션 · 테스트.
 
 남은 것은 [TODO.md](../TODO.md) 5단계 착수입니다.
