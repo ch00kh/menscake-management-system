@@ -29,6 +29,7 @@
 | API 문서 | springdoc-openapi | OpenAPI 스펙 자동생성 (`repo-structure.md` 참조) |
 | DB | PostgreSQL | - |
 | 마이그레이션 | Flyway | DB 스키마 버전 관리 |
+| 로깅 | logstash-logback-encoder | 구조화된 JSON 로그를 stdout으로 출력 (`docs/rule/logging-timezone-convention.md` 참조) |
 | 테스트 | JUnit5 + MockK + Testcontainers | Testcontainers로 실제 PostgreSQL 컨테이너 기반 통합테스트 (H2는 Flyway의 Postgres 전용 SQL과 방언 불일치 위험) |
 
 ## 라우팅과 데이터 페칭의 역할 분리
