@@ -4,15 +4,17 @@
 
 ## 지금 필요
 
-- [ ] ERP 레이아웃 자료 전달 (shadcn/ui로 이미 만들어둔 것) — web UI 스캐폴딩 시 그대로 재사용 예정
-- [ ] GitHub 조직/저장소 생성 — 아직 git 저장소가 아님
+- [x] ERP 레이아웃 자료 전달 (shadcn/ui로 이미 만들어둔 것) — `apps/web`에 30종 레이아웃 스캐폴딩으로 반영됨
+- [x] GitHub 조직/저장소 생성 — `ch00kh/menscake-management-system`에 초기 스캐폴딩 push 완료
 
 ## 스캐폴딩/첫 배포 전에 필요
 
 - [ ] `menscake.com` 도메인 DNS 설정: `app`, `api`, `dev`, `dev-api` 서브도메인을 사내 서버 IP로 A레코드 연결 (`docs/rule/infra-deployment.md`)
 - [ ] 사내 서버 준비: Docker + Docker Compose 설치, 80/443 포트 외부 개방(Let's Encrypt 인증서 발급용), 접근 계정(SSH 등) (`docs/rule/infra-deployment.md`)
 - [ ] 사내 서버에 GitHub Actions self-hosted runner 등록 — 서버 접근권한 필요 (`docs/rule/infra-deployment.md`)
-- [ ] GitHub 저장소 설정: 브랜치 보호 규칙(`main`/`dev`, 최소 1명 승인, CI 필수), GitHub Projects 보드, 라벨(`feat`/`fix`/`web`/`api`/`blocked` 등) 생성 (`docs/rule/git-convention.md`, `docs/rule/issue-management.md`)
+- [x] 브랜치 보호 규칙(`main`/`dev`, 최소 1명 승인) 설정 — GitHub Free 플랜은 Private 저장소에 브랜치 보호를 지원하지 않아 저장소를 **Public**으로 전환하고 적용함. **CI 필수 체크는 아직 없음**: 실제 CI 워크플로우(`.github/workflows/`)를 만들 때 `docs/rule/ci-convention.md`대로 required status check를 추가해야 함
+- [x] 라벨 생성 — `feat`/`fix`/`refactor`/`perf`/`test`/`docs`/`chore`/`ci`/`style`/`revert`(type), `web`/`api`(scope), `blocked` (`docs/rule/issue-management.md`). GitHub 기본 라벨(`bug`/`enhancement`/`documentation` 등)은 그대로 남아있어 정리 필요 여부는 미결정
+- [ ] GitHub Projects 보드 설정 (컬럼: `Backlog → Todo → In Progress → In Review → Done`, 자동 워크플로우) (`docs/rule/issue-management.md`)
 - [ ] GitHub Environments(dev/prod) 생성 + Secrets 실제 값 입력 (DB 비밀번호, JWT 서명 키 등) (`docs/rule/env-secrets-convention.md`)
 
 ## 나중에 (TBD 트리거될 때 — `docs/TBD.md` 참조)
