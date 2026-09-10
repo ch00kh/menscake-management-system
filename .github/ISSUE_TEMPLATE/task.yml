@@ -1,0 +1,69 @@
+name: 작업 이슈
+description: docs/rule/issue-management.md 템플릿 필수 항목 (배경/목적, 요구사항, 완료 조건, 관련 이슈)
+title: "[type/scope] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        생성 후 아래에서 고른 type/scope에 맞는 라벨(`feat`/`fix`/.../`web`/`api`)을 직접 붙여주세요 — 아직 자동 라벨링은 안 되어 있습니다 (`docs/rule/issue-management.md` 참조).
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      description: docs/rule/git-convention.md 커밋 타입과 동일
+      options:
+        - feat
+        - fix
+        - refactor
+        - perf
+        - test
+        - docs
+        - chore
+        - ci
+        - style
+        - revert
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - web
+        - api
+        - 공통/여러 패키지
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: 배경/목적
+      description: 왜 이 작업이 필요한지
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: 요구사항
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건 (Acceptance Criteria)
+      description: 체크리스트 형태 권장 (- [ ] ...)
+    validations:
+      required: true
+
+  - type: input
+    id: related
+    attributes:
+      label: 관련 이슈 (있다면)
+      placeholder: "#12"
+    validations:
+      required: false
