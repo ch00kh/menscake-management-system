@@ -10,7 +10,7 @@
 | 이슈에 할당됐는데 요구사항이 애매함 | [agent-collaboration](rule/agent-collaboration.md) |
 | GitHub Issue 라벨/템플릿/보드 상태 | [issue-management](rule/issue-management.md) |
 | 새 폴더/파일 어디에 둘지 | [repo-structure](rule/repo-structure.md) |
-| 파일명/변수명/DB컬럼명/API경로 네이밍 | [naming-convention](rule/naming-convention.md) |
+| 파일명/변수명/DB컬럼명/API경로 네이밍, 필드가 상태인지 분류인지 헷갈릴 때 | [naming-convention](rule/naming-convention.md) |
 | API 응답 JSON 모양, 에러 포맷, 상태코드 | [api-response-convention](rule/api-response-convention.md) |
 | 어떤 라이브러리 쓰는지 (web/api) | [tech-stack](rule/tech-stack.md) |
 | lint/포맷터 설정, pre-commit 동작 | [code-style-convention](rule/code-style-convention.md) |
@@ -20,6 +20,8 @@
 | 로그 레벨, 타임존(KST) | [logging-timezone-convention](rule/logging-timezone-convention.md) |
 | 서버/도메인/CORS/배포 구조 | [infra-deployment](rule/infra-deployment.md) |
 | CI 워크플로우가 왜 이렇게 짜여 있는지 | [ci-convention](rule/ci-convention.md) |
+| 새 도메인 설계 시작하기 전에 용어 확인 | [glossary](glossary.md) |
+| 도메인 설계 스펙(ERD/API 계약 등) | `spec/<도메인>/` (예: [spec/auth](spec/auth/overview.md)) |
 
 ## 전체 문서 목록
 
@@ -49,5 +51,7 @@
 | [PROGRESS.md](PROGRESS.md) | 컨벤션 논의 진행 체크리스트 (히스토리 기록용) |
 | [TBD.md](TBD.md) | 지금은 안 정하고 트리거 조건까지 미뤄둔 항목 |
 | [USER-TODO.md](USER-TODO.md) | 에이전트가 아니라 사람이 직접 해야 하는 일 |
+| [glossary.md](glossary.md) | 도메인별 용어 ↔ 실제 코드/DB 이름 사전 |
+| `spec/<도메인>/` | 도메인 설계 스펙 (brainstorming 스킬 architectural 경로 산출물) |
 
 `rule/` 외 새 하위 폴더가 필요해지면 그때 추가하고 이 지도도 같이 갱신한다 (YAGNI, `documentation-convention.md` 참조).

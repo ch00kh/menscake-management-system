@@ -18,13 +18,16 @@
 ```
 docs/
   README.md        # 문서 지도 (상황별로 어떤 문서를 봐야 하는지 라우팅)
+  glossary.md      # 도메인별 용어 사전 — 새 스펙 쓰기 전에 먼저 확인
   rule/            # 컨벤션 SSOT (git/repo-structure/naming/agent-collaboration/documentation 등)
+  spec/<도메인>/    # 도메인별 설계 문서 (brainstorming 스킬의 architectural 경로 산출물).
+                   # 예: spec/auth/{overview,tech-decisions,schema,flow}.md — 주제별로 파일을 나눈다
   PROGRESS.md      # 컨벤션 논의 진행 체크리스트
   TBD.md           # 지금은 안 정하고 미룬 항목 모음 (트리거 조건 포함)
   USER-TODO.md     # 에이전트가 아니라 사람이 직접 해야 하는 일 목록
 ```
 
-`rule/` 외 다른 하위 폴더는 필요해지면 그때 추가한다 (YAGNI).
+`rule/`·`spec/` 외 다른 하위 폴더는 필요해지면 그때 추가한다 (YAGNI).
 
 ## 문서 언어
 
