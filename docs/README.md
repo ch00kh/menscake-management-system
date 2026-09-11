@@ -22,6 +22,7 @@
 | CI 워크플로우가 왜 이렇게 짜여 있는지 | [ci-convention](rule/ci-convention.md) |
 | 새 도메인 설계 시작하기 전에 용어 확인 | [glossary](glossary.md) |
 | 도메인 설계 스펙(ERD/API 계약 등) | `spec/<도메인>/` (예: [spec/auth](spec/auth/overview.md)) |
+| 도메인 스펙/API 계약을 어떻게 써야 하는지 | [documentation-convention의 "도메인 스펙 작성 규칙"](rule/documentation-convention.md) |
 
 ## 전체 문서 목록
 

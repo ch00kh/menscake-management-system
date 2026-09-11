@@ -1,28 +1,12 @@
-# 인증/로그인 — 흐름 & API
+# 인증/로그인 — 흐름
 
-## 인증 흐름 & API
+API 계약(엔드포인트별 요청/응답 필드, 타입, 에러 코드)은 [api.md](./api.md)를 참조한다. 이 문서는 그 계약이 왜 이런 모양인지, 어떻게 동작하는지의 흐름만 다룬다.
 
-| 엔드포인트 | 설명 |
-|---|---|
-| `POST /api/auth/login` | `{ email, password }` → Access Token(응답 바디) + Refresh Token(httpOnly Secure 쿠키) |
-| `POST /api/auth/refresh` | Refresh Token 쿠키만으로 호출 → Access Token 재발급 + Refresh Token 회전(기존 revoke, 신규 발급) |
-| `POST /api/auth/logout` | Refresh Token 쿠키 → 해당 행 DB에서 revoke + 쿠키 삭제 |
-
-응답 바디 공통 형태(login, refresh):
-```json
-{
-  "accessToken": "...",
-  "account": { "id": 1, "name": "...", "email": "...", "role": "ADMIN" },
-  "permissions": [
-    { "resource": "orders", "canCreate": true, "canRead": true, "canUpdate": true, "canDelete": false }
-  ]
-}
-```
+## 인증 흐름
 
 - Access Token: HMAC-JWT, TTL 15분. `permissions`를 claim에 포함 — 매 요청 DB 조회 없이 인가 판단.
 - Refresh Token: TTL 14일, 회전(rotate) 방식. DB에는 원문이 아니라 해시로 저장 (스키마는 [schema.md](./schema.md)).
 - `SecurityConfig.kt`의 `permitAll()`을 제거하고, `/api/auth/login`, `/api/auth/refresh`만 공개, 나머지는 JWT 필터 인증 요구.
-- 로그인 실패(이메일 없음/비밀번호 틀림)는 원인 구분 없이 동일한 401 메시지 — 계정 존재 여부 노출 방지.
 
 ## 권한 체크 메커니즘
 
