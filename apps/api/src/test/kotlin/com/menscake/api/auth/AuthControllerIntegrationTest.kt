@@ -1,6 +1,5 @@
 package com.menscake.api.auth
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.menscake.api.TestcontainersConfiguration
 import com.menscake.api.auth.dto.LoginRequest
 import org.junit.jupiter.api.Test
@@ -15,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import tools.jackson.databind.ObjectMapper
 
 /**
  * login/refresh/logout 전체 흐름을 Testcontainers PostgreSQL(+Flyway 시드 admin 계정)

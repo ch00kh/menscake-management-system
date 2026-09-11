@@ -1,6 +1,5 @@
 package com.menscake.api.common.config
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.menscake.api.auth.jwt.JwtAuthenticationFilter
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
@@ -19,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import tools.jackson.databind.ObjectMapper
 
 /**
  * 공통 Spring Security 설정.
