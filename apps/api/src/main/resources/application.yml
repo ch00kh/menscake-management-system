@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: api
+  profiles:
+    active: dev
+  jackson:
+    time-zone: Asia/Seoul
+  jpa:
+    hibernate:
+      ddl-auto: validate

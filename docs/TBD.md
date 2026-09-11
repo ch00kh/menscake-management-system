@@ -12,3 +12,4 @@
 | 로그 수집 스택 (Grafana Loki 등) | 현재는 `docker logs`로 충분한 규모 | 서비스가 늘거나 로그 검색이 자주 필요해질 때 | `docs/rule/logging-timezone-convention.md` |
 | `docs/` 하위 폴더 확장 (`docs/rule/` 외 다른 폴더) | 지금은 컨벤션 문서뿐이라 `rule/` 하나로 충분 | ADR, 아키텍처 문서 등 다른 종류의 문서가 필요해질 때 | `docs/rule/documentation-convention.md` |
 | 오프라인 지원 (PWA) | 인증된 API 호출은 오프라인에서 원천적으로 불가능 — 별도 로컬 캐싱/큐잉 전략 필요 | 오프라인 사용 요구사항이 실제로 나올 때 | `docs/rule/tech-stack.md` |
+| Todo → In Progress 자동화 (이슈 assign/브랜치 생성 시) | GitHub Projects 내장 workflow에 이 트리거 자체가 없다 (`Item added`/`Item closed`/`Pull request merged`/`Pull request linked to issue`만 있음). 지금은 이 전환만 수동으로 옮긴다 | CI 워크플로우(GitHub Actions)를 실제로 만들 때, Projects API를 호출하는 커스텀 자동화 스크립트 추가를 함께 검토 | `docs/rule/issue-management.md` |
