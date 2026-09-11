@@ -24,7 +24,7 @@
 | [overview.md](./overview.md) | 배경, 범위 (이 문서) |
 | [tech-decisions.md](./tech-decisions.md) | 기술 선택과 근거 |
 | [schema.md](./schema.md) | ERD, 테이블/컬럼 정의 |
-| [api-contract.md](./api-contract.md) | 엔드포인트별 요청/응답 필드·타입·상태-분류 구분·허용값·에러 코드 (프론트/백엔드 병렬 구현용 계약) |
+| [api.md](./api.md) | 엔드포인트별 요청/응답 필드·타입·상태-분류 구분·허용값·에러 코드 (프론트/백엔드 병렬 구현용 계약) |
 | [flow.md](./flow.md) | 인증 흐름, 권한 체크 메커니즘, 프론트 연동, 에러 처리, 테스트 |
 
 ## 후속 이슈 (이번 범위 밖)

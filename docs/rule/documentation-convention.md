@@ -21,7 +21,7 @@ docs/
   glossary.md      # 도메인별 용어 사전 — 새 스펙 쓰기 전에 먼저 확인
   rule/            # 컨벤션 SSOT (git/repo-structure/naming/agent-collaboration/documentation 등)
   spec/<도메인>/    # 도메인별 설계 문서 (brainstorming 스킬의 architectural 경로 산출물).
-                   # 예: spec/auth/{overview,tech-decisions,schema,api-contract,flow}.md — 주제별로 파일을 나눈다
+                   # 예: spec/auth/{overview,tech-decisions,schema,state,api,flow}.md — 주제별로 파일을 나눈다
   PROGRESS.md      # 컨벤션 논의 진행 체크리스트
   TBD.md           # 지금은 안 정하고 미룬 항목 모음 (트리거 조건 포함)
   USER-TODO.md     # 에이전트가 아니라 사람이 직접 해야 하는 일 목록
@@ -34,11 +34,12 @@ docs/
 브레인스토밍 인터뷰로 도메인 설계를 스펙 문서화할 때 지키는 규칙. 목표는 이 문서들만 주면 프론트/백엔드 (서브)에이전트가 서로의 코드나 대화 히스토리 없이도, 가정 없이 각자 구현을 시작할 수 있게 만드는 것이다 (`agent-collaboration.md`의 "가정 절대 금지" 원칙을 스펙 문서 차원에서 보장).
 
 - **용어는 인터뷰 도중 실시간으로 `docs/glossary.md`에 추가한다.** 인터뷰가 끝난 뒤 몰아서 정리하지 않는다 — 유스케이스를 하나씩 짚어나가면서 새 도메인 용어가 나오는 즉시 그 자리에서 기록한다.
-- **API 계약은 `docs/spec/<도메인>/api-contract.md`에 별도 파일로 작성한다.** 프론트/백엔드가 서로를 기다리지 않고 병렬로 구현할 수 있을 만큼 엄격하게 쓴다:
+- **API 계약은 `docs/spec/<도메인>/api.md`에 별도 파일로 작성한다.** 프론트/백엔드가 서로를 기다리지 않고 병렬로 구현할 수 있을 만큼 엄격하게 쓴다:
   - 요청/응답의 모든 필드에 타입을 명시한다.
   - `naming-convention.md`의 상태(state)/분류(classification) 필드는 **허용값 전체 목록**과 **상태인지 분류인지**를 반드시 표시한다. API 응답으로 나가는 순간 코드의 enum 타입 정보는 사라지고 단순 문자열이 되므로, 이 문서가 그 타입 정보의 유일한 출처가 된다.
   - 엔드포인트별 에러 응답(상태 코드, 조건)도 명시한다.
-- `flow.md`(또는 그에 준하는 흐름 설명 파일)는 `api-contract.md`를 참조하고, 필드 목록을 중복 기술하지 않는다.
+- `flow.md`(또는 그에 준하는 흐름 설명 파일)는 `api.md`를 참조하고, 필드 목록을 중복 기술하지 않는다.
+- **상태(state) 필드가 여러 단계를 전이하는 상태 머신이면 `docs/spec/<도메인>/state.md`에 따로 문서화한다.** 허용 상태 전체 목록, 상태별로 가능한 전이(어떤 상태에서 어떤 상태로 갈 수 있는지), 전이를 일으키는 트리거(API 호출, 이벤트 등)를 명시한다. 단순 on/off 불리언(예: `is_active`) 하나처럼 전이랄 게 없는 상태는 `schema.md`의 필드 설명에 "상태(state)"라고 표시하는 것만으로 충분하고, 별도 `state.md`까지는 필요 없다.
 
 ## 문서 언어
 

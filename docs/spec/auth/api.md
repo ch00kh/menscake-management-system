@@ -2,9 +2,14 @@
 
 프론트/백엔드가 서로를 기다리지 않고 이 문서만 보고 병렬로 구현하기 위한 엄격한 계약이다. 필드 목록/타입/허용값이 실제 구현과 달라지면 이 문서를 먼저 갱신한다.
 
-공통: 모든 엔드포인트는 `docs/rule/api-response-convention.md`를 따른다 — 성공 응답은 아래 바디를 그대로, 실패 응답은 RFC 7807 `ProblemDetail`.
+공통: 모든 엔드포인트는 `docs/rule/api-response-convention.md`를 따른다.
+- 성공 응답은 실제 값을 **`data` 필드로 감싼다** — 아래 각 엔드포인트의 응답 표는 `data` 안쪽 필드 기준이다.
+- 실패 응답은 `data`로 감싸지 않고 RFC 7807 `ProblemDetail`을 그대로 반환한다.
+- 컨트롤러는 `ApiResponse<T>`를 명시적으로 반환한다(자동 wrapping 금지) — DTO 클래스명은 각 엔드포인트 아래 표기.
 
 ## `POST /api/auth/login`
+
+DTO: 요청 `LoginRequest`, 응답 `ApiResponse<AuthResponse>`
 
 **요청**
 
@@ -14,6 +19,20 @@
 | `password` | string | Y | - |
 
 **응답 200**
+
+```json
+{
+  "data": {
+    "accessToken": "...",
+    "account": { "id": 1, "name": "...", "email": "...", "role": "ADMIN" },
+    "permissions": [
+      { "resource": "orders", "canCreate": true, "canRead": true, "canUpdate": true, "canDelete": false }
+    ]
+  }
+}
+```
+
+`data` 안쪽 필드:
 
 | 필드 | 타입 | 성격 | 허용값 | 설명 |
 |---|---|---|---|---|
@@ -39,9 +58,11 @@
 
 ## `POST /api/auth/refresh`
 
+DTO: 요청 없음, 응답 `ApiResponse<AuthResponse>`
+
 **요청**: 바디 없음. Refresh Token 쿠키가 있어야 함.
 
-**응답 200**: `POST /api/auth/login`과 완전히 동일한 바디 (`accessToken`, `account`, `permissions`). Refresh Token도 회전되어 새 쿠키로 내려간다.
+**응답 200**: `POST /api/auth/login`과 완전히 동일한 바디(`data.accessToken`/`data.account`/`data.permissions`) — 같은 `AuthResponse` DTO를 재사용한다. Refresh Token도 회전되어 새 쿠키로 내려간다.
 
 **에러**
 
@@ -50,6 +71,8 @@
 | 401 | 쿠키 없음 / 만료 / 이미 철회됨(로그아웃 이력) / 위조 |
 
 ## `POST /api/auth/logout`
+
+DTO: 요청 없음, 응답 없음 (204는 바디 자체가 없어 `data` 래핑 대상이 아님)
 
 **요청**: 바디 없음. Refresh Token 쿠키(있으면 사용, 없어도 에러 아님).
 
@@ -61,3 +84,4 @@
 
 - 필드의 상태/분류 구분 기준은 `docs/rule/naming-convention.md`의 "필드 설계 — 상태(state) vs 분류(classification)" 참조.
 - `account.role`, `permissions[].resource` 등 도메인 용어의 의미는 `docs/glossary.md` 참조.
+- DTO 응답 클래스를 액션별로 나누지 않고 `AuthResponse` 하나를 login/refresh가 재사용하는 이유는 `docs/rule/naming-convention.md`의 "응답 DTO는 액션별로 나누지 않는다" 원칙과 동일하다.
