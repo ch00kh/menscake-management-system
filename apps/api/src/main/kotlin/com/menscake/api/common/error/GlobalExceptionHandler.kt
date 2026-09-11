@@ -1,5 +1,8 @@
 package com.menscake.api.common.error
 
+import com.menscake.api.auth.InvalidCredentialsException
+import com.menscake.api.auth.InvalidRefreshTokenException
+import com.menscake.api.auth.permission.PermissionDeniedException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -34,4 +37,14 @@ class GlobalExceptionHandler {
         problemDetail.setProperty("errors", errors)
         return problemDetail
     }
+
+    /** 로그인 실패/Refresh Token 무효 — 컨트롤러 안에서 던져지는 인증 실패 (docs/spec/auth/api.md 참조). */
+    @ExceptionHandler(InvalidCredentialsException::class, InvalidRefreshTokenException::class)
+    fun handleUnauthorized(ex: RuntimeException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.message ?: "인증에 실패했습니다")
+
+    /** `@RequiresPermission` 불통과. */
+    @ExceptionHandler(PermissionDeniedException::class)
+    fun handlePermissionDenied(ex: PermissionDeniedException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message ?: "권한이 없습니다")
 }

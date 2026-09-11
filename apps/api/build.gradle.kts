@@ -23,6 +23,10 @@ repositories {
 }
 
 dependencies {
+    // spring-boot-starter-aop is no longer published as of Spring Boot 4.x — spring-aop
+    // already ships transitively via spring-context, so aspectjweaver (for @Aspect
+    // pointcut expression parsing) is the only piece that needs adding explicitly.
+    implementation("org.aspectj:aspectjweaver")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -34,6 +38,9 @@ dependencies {
     implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
     kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
