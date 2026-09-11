@@ -16,6 +16,14 @@ docs/
 - `packages/` 폴더는 아직 만들지 않는다. 프론트 앱이 `web` 하나뿐이라 JS/TS끼리 공유할 코드가 없다. 프론트 앱이 늘어나면 그때 만든다 (YAGNI).
 - `web`(TypeScript)과 `api`(Kotlin)는 언어가 달라 파일 단위 코드 공유가 불가능하다. 별도 빌드 생태계(pnpm/npm workspace vs Gradle)로 분리된다.
 
+## `apps/web` 내부 구조
+
+- `src/app/`: 멀티탭 셸 인프라 (`AppShell`, `TabBar`, `TabStoreProvider` 등). ERP 탭 내부에서만 쓰인다.
+- `src/pages/`: 셸 진입 전/밖의 독립 라우트 화면 (예: `LoginPage`). `App.tsx`에 개별 `<Route>`로 등록한다.
+- `src/layouts/`: ERP 탭 안에서 렌더되는 화면 레이아웃 30종.
+- `src/components/<domain>/`: 특정 도메인에 묶인 재사용 컴포넌트 (예: `components/auth/`, `components/erp/`).
+- `src/components/ui/`: shadcn/ui 생성 프리미티브 — 위 "생성/외부관리 코드" 목록 참조.
+
 ## API 타입 동기화
 
 - `api`가 OpenAPI 스펙을 노출한다 (springdoc-openapi).
