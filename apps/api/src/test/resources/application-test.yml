@@ -1,0 +1,12 @@
+# 테스트 전용 프로파일. 실제 env var 없이도 컨텍스트가 뜨도록 안전한 더미 값만 둔다.
+spring:
+  flyway:
+    placeholders:
+      adminEmail: admin@test.menscake.com
+      adminPassword: test-admin-password-only
+
+app:
+  cors:
+    allowed-origin: http://localhost:5173
+  jwt:
+    secret: test-only-hmac-secret-key-must-be-at-least-32-bytes-long

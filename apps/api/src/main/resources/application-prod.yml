@@ -3,7 +3,13 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  flyway:
+    placeholders:
+      adminEmail: ${ADMIN_SEED_EMAIL}
+      adminPassword: ${ADMIN_SEED_PASSWORD}
 
 app:
   cors:
     allowed-origin: https://app.menscake.com
+  jwt:
+    secret: ${JWT_SECRET}

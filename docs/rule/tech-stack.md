@@ -24,6 +24,8 @@
 | 프레임워크 | Kotlin + Spring Boot | - |
 | 웹 | Spring Web | REST API |
 | 인증/인가 | Spring Security | JWT 기반 (아래 "인증 전략" 참조) |
+| JWT 발급/검증 | jjwt (io.jsonwebtoken) | HMAC 서명 기반 Access/Refresh Token. OAuth2 Resource Server(Nimbus JOSE)는 외부 OAuth2 제공자 연동 전제라 이 정도 단순 인증에는 과함 (`docs/spec/auth/tech-decisions.md` 참조) |
+| 권한 체크 | Spring AOP (`spring-boot-starter-aop`) | `@RequiresPermission` 커스텀 어노테이션 기반 인가 (`docs/spec/auth/flow.md` 참조) |
 | ORM | Spring Data JPA | - |
 | 쿼리 빌더 | QueryDSL | 복잡한 동적 쿼리를 타입-세이프하게 |
 | API 문서 | springdoc-openapi | OpenAPI 스펙 자동생성 (`repo-structure.md` 참조) |

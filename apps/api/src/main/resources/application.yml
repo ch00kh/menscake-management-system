@@ -8,3 +8,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+app:
+  jwt:
+    access-token-ttl: PT15M
+    refresh-token-ttl: P14D
