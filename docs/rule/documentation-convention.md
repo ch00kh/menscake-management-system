@@ -22,7 +22,8 @@ docs/
   rule/            # 컨벤션 SSOT (git/repo-structure/naming/agent-collaboration/documentation 등)
   spec/<도메인>/    # 도메인별 설계 문서 (brainstorming 스킬의 architectural 경로 산출물).
                    # 예: spec/auth/{overview,tech-decisions,schema,state,api,flow}.md — 주제별로 파일을 나눈다
-  PROGRESS.md      # 컨벤션 논의 진행 체크리스트
+  STATUS.md        # 완료/남은 작업 핸드오프 문서 — 세션이 바뀔 때 여기부터 확인
+  PROGRESS.md      # 컨벤션 논의 진행 체크리스트 (완료 후 더 갱신 안 함)
   TBD.md           # 지금은 안 정하고 미룬 항목 모음 (트리거 조건 포함)
   USER-TODO.md     # 에이전트가 아니라 사람이 직접 해야 하는 일 목록
 ```
