@@ -4,6 +4,7 @@ import { Gallery } from "@/app/Gallery"
 import { LayoutPage } from "@/app/LayoutPage"
 import { MENU_LAYOUTS, MENU_ROOT } from "@/app/menu"
 import { getLayout } from "@/layouts/registry"
+import { AccountManagementPage } from "@/pages/AccountManagementPage"
 
 /** 탭 하나가 무엇을 보여주는지. 경로 문자열이 탭의 식별자다. */
 export type ResolvedTab = {
@@ -40,6 +41,14 @@ export function resolveTab(pathname: string): ResolvedTab | null {
       label: layout.name,
       trail: [MENU_ROOT.label, MENU_LAYOUTS.label, layout.group, layout.name],
       element: <LayoutPage slug={slug} />,
+    }
+  }
+
+  if (pathname === "/accounts") {
+    return {
+      label: "계정 관리",
+      trail: [MENU_ROOT.label, "계정 관리"],
+      element: <AccountManagementPage />,
     }
   }
 

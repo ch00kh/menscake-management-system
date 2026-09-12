@@ -7,6 +7,7 @@ import {
   LayoutGridIcon,
   ListIcon,
   NetworkIcon,
+  UsersIcon,
   WorkflowIcon,
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
@@ -187,6 +188,16 @@ export function AppSidebar() {
                           </CollapsibleContent>
                         </SidebarMenuSubItem>
                       </Collapsible>
+                      {/* 2단계: 계정 관리 (단일 화면이라 하위 그룹 없이 바로 링크) */}
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          isActive={pathname === "/accounts"}
+                          render={<NavLink to="/accounts" />}
+                        >
+                          <UsersIcon />
+                          <span>계정 관리</span>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>
