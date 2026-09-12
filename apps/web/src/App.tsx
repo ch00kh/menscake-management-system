@@ -1,18 +1,27 @@
 import { Route, Routes } from "react-router-dom"
 
 import { AppShell } from "@/app/AppShell"
+import { RequireAuth } from "@/app/RequireAuth"
 import { LoginPage } from "@/pages/LoginPage"
 
 /**
  * 멀티탭 셸이 모든 경로를 직접 처리한다. 탭 여러 개가 동시에 살아 있어야 하는데
  * React Router 는 한 번에 한 라우트만 매칭하므로, 경로 해석은
- * `tabResolve.tsx` 가 맡는다. 로그인 화면은 셸 진입 전 단계라 별도 라우트로 뺀다.
+ * `tabResolve.tsx` 가 맡는다. 로그인 화면은 셸 진입 전 단계라 별도 라우트로 빼고,
+ * 셸 진입은 `RequireAuth`로 감싸 미인증 상태를 막는다.
  */
 export function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="*" element={<AppShell />} />
+      <Route
+        path="*"
+        element={
+          <RequireAuth>
+            <AppShell />
+          </RequireAuth>
+        }
+      />
     </Routes>
   )
 }

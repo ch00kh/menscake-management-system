@@ -25,7 +25,11 @@ npm run format
 
 ## 환경변수
 
-현재 이 앱은 별도의 `.env`가 필요하지 않습니다 (백엔드 연동 전 정적 목업 데이터만 사용). API 연동이 시작되면 `.env.example`을 추가하고 여기에 목록을 기재합니다 (`docs/rule/env-secrets-convention.md` 참조).
+`.env.example`을 복사해 `.env`로 만들고 값을 채웁니다 (`docs/rule/env-secrets-convention.md` 참조).
+
+| 변수 | 설명 |
+|---|---|
+| `VITE_API_BASE_URL` | 백엔드 API 서버 주소 (예: `http://localhost:8080`). 비밀값 아님 |
 
 첫 화면(`/`)이 30종 갤러리입니다. 좌측 사이드바 또는 `Ctrl/Cmd + K`로 이동합니다.
 
@@ -38,13 +42,24 @@ src/
     AppSidebar.tsx       레지스트리 기반 내비게이션
     Gallery.tsx          30종 카탈로그(홈)
     LayoutPage.tsx       /layouts/:slug 라우팅
+    RequireAuth.tsx      셸 진입 전 세션 확인 (실패 시 /login 리다이렉트)
     TabBar.tsx / TabWorkspace.tsx / TabStoreProvider.tsx   탭 상태/워크스페이스
     tabContext.ts / tabResolve.tsx                         탭 관련 컨텍스트·리졸버
     menu.ts              사이드바 메뉴 데이터
+  pages/
+    LoginPage.tsx        /login 화면 (셸 진입 전, 별도 라우트)
   layouts/
     registry.ts          30종 메타데이터 (번호·이름·그룹·용도·컴포넌트)
     <LayoutName>.tsx     레이아웃 30개 (컴포넌트명과 파일명 일치, PascalCase)
+  api/
+    auth.ts              /api/auth/{login,refresh,logout} 클라이언트 (손으로 작성, orval 미사용)
+    http.ts               authorizedFetch — 401 시 refresh 재시도 메커니즘 (아직 실사용처 없음)
+  hooks/
+    useAuthStore.ts       인증 상태(Zustand) — accessToken은 메모리에만, persist 없음
+    use-mobile.ts         shadcn CLI가 함께 생성한 훅 (직접 수정하지 않음)
   components/
+    auth/
+      LoginForm.tsx       로그인 폼 (RHF + Zod, 실제 로그인 API 연동)
     erp/                 레이아웃들이 공유하는 업무용 블록 (파일당 관련 컴포넌트 묶음)
       Page.tsx           Page / FullPage / Surface 컨테이너
       PageHeader.tsx     PageHeader(브레드크럼+제목+액션), PaneHeader(패널 제목줄)
@@ -54,7 +69,6 @@ src/
       Charts.tsx         TrendChart / ComparisonChart / CompositionChart
     ui/                  shadcn/ui 컴포넌트 (CLI가 생성 — 직접 수정하지 않음)
     ThemeProvider.tsx    라이트/다크 테마 컨텍스트
-  hooks/use-mobile.ts    shadcn CLI가 함께 생성한 훅 (직접 수정하지 않음)
   data/mock.ts           도메인 중립 더미 데이터
   test/setup.ts          Vitest + Testing Library 전역 설정
 ```
