@@ -27,8 +27,9 @@ import tools.jackson.databind.ObjectMapper
  * `app.cors.allowed-origin`(프로파일별 설정, `docs/rule/infra-deployment.md` 참조)에
  * 지정된 구체적인 origin만 허용한다 — 와일드카드(`*`)는 credentials 허용과 함께 쓸 수 없다.
  *
- * `/api/auth` 하위 경로(로그인/갱신)만 공개하고 나머지는 [JwtAuthenticationFilter]가 채운
- * `SecurityContext` 기준으로 인증을 요구한다. 세션을 쓰지 않는 stateless 구성이다.
+ * `/api/auth/login`, `/api/auth/refresh`, `/api/auth/logout`만 공개하고(로그인 전에도
+ * 호출해야 하므로) 나머지(`/api/auth/change-password` 포함)는 [JwtAuthenticationFilter]가
+ * 채운 `SecurityContext` 기준으로 인증을 요구한다. 세션을 쓰지 않는 stateless 구성이다.
  */
 @Configuration
 class SecurityConfig(
@@ -50,7 +51,9 @@ class SecurityConfig(
                 authenticationEntryPoint = AuthenticationEntryPoint { _, response, _ -> writeUnauthorized(response) }
             }
             authorizeHttpRequests {
-                authorize("/api/auth/**", permitAll)
+                authorize("/api/auth/login", permitAll)
+                authorize("/api/auth/refresh", permitAll)
+                authorize("/api/auth/logout", permitAll)
                 authorize("/health", permitAll)
                 authorize(anyRequest, authenticated)
             }

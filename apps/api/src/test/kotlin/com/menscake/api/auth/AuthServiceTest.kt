@@ -161,4 +161,60 @@ class AuthServiceTest {
         val digest = MessageDigest.getInstance("SHA-256").digest(rawToken.toByteArray())
         return Base64.getEncoder().encodeToString(digest)
     }
+
+    // ---------- mustChangePassword ----------
+
+    @Test
+    fun `로그인 응답의 account에 mustChangePassword가 그대로 실린다`() {
+        val mustChangeAccount =
+            Account(
+                id = 3,
+                email = "new-hire@menscake.com",
+                passwordHash = "hashed",
+                name = "신규직원",
+                role = Role.STAFF,
+                mustChangePassword = true,
+            )
+        every { accountRepository.findByEmail("new-hire@menscake.com") } returns mustChangeAccount
+        every { passwordEncoder.matches("password", "hashed") } returns true
+
+        val result = authService.login("new-hire@menscake.com", "password")
+
+        assertEquals(true, result.response.account.mustChangePassword)
+    }
+
+    // ---------- change-password ----------
+
+    @Test
+    fun `현재 비밀번호가 맞으면 비밀번호를 바꾸고 mustChangePassword를 false로 되돌린다`() {
+        val target =
+            Account(
+                id = 5,
+                email = "staff@menscake.com",
+                passwordHash = "old-hashed",
+                name = "직원",
+                role = Role.STAFF,
+                mustChangePassword = true,
+            )
+        every { accountRepository.findById(5) } returns Optional.of(target)
+        every { passwordEncoder.matches("current", "old-hashed") } returns true
+        every { passwordEncoder.encode("new-password") } returns "new-hashed"
+
+        authService.changePassword(5, "current", "new-password")
+
+        assertEquals("new-hashed", target.passwordHash)
+        assertEquals(false, target.mustChangePassword)
+    }
+
+    @Test
+    fun `현재 비밀번호가 틀리면 InvalidCurrentPasswordException`() {
+        val target =
+            Account(id = 5, email = "staff@menscake.com", passwordHash = "old-hashed", name = "직원", role = Role.STAFF)
+        every { accountRepository.findById(5) } returns Optional.of(target)
+        every { passwordEncoder.matches("wrong", "old-hashed") } returns false
+
+        assertThrows(InvalidCurrentPasswordException::class.java) {
+            authService.changePassword(5, "wrong", "new-password")
+        }
+    }
 }
