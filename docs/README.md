@@ -23,6 +23,7 @@
 | 새 도메인 설계 시작하기 전에 용어 확인 | [glossary](glossary.md) |
 | 도메인 설계 스펙(ERD/API 계약 등) | `spec/<도메인>/` (예: [spec/auth](spec/auth/overview.md)) |
 | 도메인 스펙/API 계약을 어떻게 써야 하는지 | [documentation-convention의 "도메인 스펙 작성 규칙"](rule/documentation-convention.md) |
+| 지금까지 뭐가 됐고 다음에 뭘 하면 되는지 | [STATUS.md](STATUS.md) |
 
 ## 전체 문서 목록
 
@@ -49,6 +50,7 @@
 
 | 문서 | 용도 |
 |---|---|
+| [STATUS.md](STATUS.md) | 지금까지 완료된 것/남은 것 핸드오프 문서 — 세션 바뀔 때 여기부터 |
 | [PROGRESS.md](PROGRESS.md) | 컨벤션 논의 진행 체크리스트 (히스토리 기록용) |
 | [TBD.md](TBD.md) | 지금은 안 정하고 트리거 조건까지 미뤄둔 항목 |
 | [USER-TODO.md](USER-TODO.md) | 에이전트가 아니라 사람이 직접 해야 하는 일 |
