@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom"
 
 import { AppShell } from "@/app/AppShell"
 import { RequireAuth } from "@/app/RequireAuth"
-import { AccountManagementPage } from "@/pages/AccountManagementPage"
 import { ChangePasswordPage } from "@/pages/ChangePasswordPage"
 import { LoginPage } from "@/pages/LoginPage"
 
@@ -12,10 +11,10 @@ import { LoginPage } from "@/pages/LoginPage"
  * `tabResolve.tsx` 가 맡는다. 로그인 화면은 셸 진입 전 단계라 별도 라우트로 빼고,
  * 셸 진입은 `RequireAuth`로 감싸 미인증 상태를 막는다.
  *
- * 계정 관리(`/accounts`)와 비밀번호 변경(`/change-password`)도 아직 셸에 편입되지
- * 않은 독립 라우트다(docs/rule/repo-structure.md의 `src/pages/` 규칙). 인증은 필요하므로
- * `RequireAuth`로 감싼다 — `/change-password`는 `mustChangePassword===true`일 때
- * `RequireAuth`가 도착시키는 경로이기도 하다.
+ * 계정 관리(`/accounts`)는 `tabResolve.tsx`에 등록돼 있어 `*` 경로로 셸에
+ * 편입된다(사이드바/탭이 유지됨). 비밀번호 변경(`/change-password`)은 의도적으로
+ * 셸 밖 독립 라우트로 남긴다 — `mustChangePassword===true`인 동안 사이드바를 통해
+ * 다른 화면으로 빠져나가지 못하게 강제하는 흐름이라, 탭으로 열리면 그 강제가 깨진다.
  */
 export function App() {
   return (
@@ -26,14 +25,6 @@ export function App() {
         element={
           <RequireAuth>
             <ChangePasswordPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/accounts"
-        element={
-          <RequireAuth>
-            <AccountManagementPage />
           </RequireAuth>
         }
       />
