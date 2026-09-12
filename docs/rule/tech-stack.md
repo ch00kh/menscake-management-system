@@ -10,7 +10,7 @@
 | 폼 | React Hook Form | 폼 상태/검증 관리 |
 | 서버 상태 | TanStack Query | API 데이터 fetching/캐싱 |
 | API 클라이언트 생성 | orval | OpenAPI 스펙 기반 TS 타입 + TanStack Query 훅 자동생성 (`repo-structure.md`의 API 타입 동기화 참조) |
-| 스키마 검증 | Zod | 폼/API 응답 검증 (RHF 리졸버 연결) |
+| 스키마 검증 | Zod + @hookform/resolvers | 폼/API 응답 검증. `@hookform/resolvers/zod`의 `zodResolver`로 RHF와 연결 |
 | 클라이언트 상태 | Zustand | 전역 클라이언트 상태 (인증 토큰 등) |
 | UI 컴포넌트 | shadcn/ui(Base UI 프리셋) + Tailwind CSS | 기존에 구축해둔 ERP 레이아웃 재사용. shadcn/ui 기본값인 Radix 대신 **Base UI**를 프리미티브로 쓴다 |
 | 차트 | recharts | shadcn/ui 프리셋에 포함된 차트 라이브러리. KPI/대시보드/리포트 레이아웃에서 사용 |
