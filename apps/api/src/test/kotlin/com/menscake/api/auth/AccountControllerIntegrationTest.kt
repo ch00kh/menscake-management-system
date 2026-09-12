@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delet
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import tools.jackson.databind.ObjectMapper
@@ -63,6 +64,20 @@ class AccountControllerIntegrationTest {
     @Test
     fun `인증 없이 계정 목록을 조회하면 401이다`() {
         mockMvc.perform(get("/api/accounts")).andExpect(status().isUnauthorized)
+    }
+
+    /**
+     * 회귀 테스트 — `SecurityConfig.writeUnauthorized()`가 charset 없이 `response.writer`로
+     * 응답을 써서 한글 `detail`이 전부 `?`로 깨졌던 버그(#40)를 잡는다. 응답 바이트 자체를
+     * 검사해야 재발을 막을 수 있어 `jsonPath`(디코딩된 문자열 비교)로 명시적으로 확인한다.
+     */
+    @Test
+    fun `인증 없이 접근한 401 응답은 UTF-8로 인코딩된 한글 detail을 담는다`() {
+        mockMvc
+            .perform(get("/api/accounts"))
+            .andExpect(status().isUnauthorized)
+            .andExpect(content().contentType("application/problem+json;charset=UTF-8"))
+            .andExpect(jsonPath("$.detail").value("인증이 필요합니다"))
     }
 
     @Test
