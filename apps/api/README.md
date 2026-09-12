@@ -24,8 +24,13 @@ PostgreSQL 인스턴스를 준비하고 아래 환경변수로 접속 정보를 
 
 ## 필요 환경변수
 
-`docs/rule/env-secrets-convention.md`에 따라 시크릿은 `.env`가 아닌 환경변수로 주입합니다
-(`apps/api`는 아직 `.env`/`.env.example` 없이 셸 환경변수만 사용합니다).
+`docs/rule/env-secrets-convention.md`에 따라 `.env.example`을 복사해 `.env`로 만들고 값을 채웁니다.
+`.env`는 `KEY=VALUE` 형식만 지원합니다 (`export`, 따옴표 등 셸 문법은 지원 안 함 — Spring Boot의
+`spring.config.import`가 단순 property 파일로 읽습니다). `.env`는 커밋되지 않습니다(`.gitignore`).
+
+```bash
+cp .env.example .env
+```
 
 | 변수 | 설명 | 사용처 |
 |---|---|---|
