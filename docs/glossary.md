@@ -18,3 +18,10 @@
 | 리프레시 토큰 | Access Token 재발급용 장기 토큰, DB에서 철회 가능 | `RefreshToken` 엔티티 / `refresh_token` 테이블 |
 | 권한 | 계정별 리소스에 대한 생성/조회/수정/삭제 허용 여부(상태) | `Permission` 엔티티 / `permission` 테이블 |
 | 액션 | 권한 체크의 동작 단위 | `Action` enum — `CREATE`\|`READ`\|`UPDATE`\|`DELETE` |
+
+## 계정 관리 (account-management) — [스펙](./spec/account-management/overview.md)
+
+| 용어 | 의미 | 코드/DB 이름 |
+|---|---|---|
+| 비밀번호 변경 강제 | 관리자가 계정을 생성/비밀번호 재설정하면 다음 로그인 시 비밀번호 변경 화면으로 강제 이동시키는 상태 | `Account.mustChangePassword` (boolean) |
+| 비밀번호 재설정 | 관리자가 기존 계정의 비밀번호를 대신 설정하는 액션. 대상 계정은 다시 변경 강제 대상이 됨 | `PATCH /api/accounts/{id}`의 `password` 필드 |
