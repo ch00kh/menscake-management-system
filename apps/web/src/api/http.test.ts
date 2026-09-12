@@ -53,6 +53,7 @@ describe("authorizedFetch", () => {
         name: "관리자",
         email: "admin@menscake.com",
         role: "ADMIN",
+        mustChangePassword: false,
       },
       permissions: [],
     })
