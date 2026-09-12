@@ -15,11 +15,19 @@ vi.mock("@/api/auth", async (importOriginal) => {
 
 const mockedRefresh = vi.mocked(refresh)
 
-function renderGuarded() {
+function renderGuarded(initialEntries: string[] = ["/"]) {
   return render(
-    <MemoryRouter initialEntries={["/"]}>
+    <MemoryRouter initialEntries={initialEntries}>
       <Routes>
         <Route path="/login" element={<div>로그인 화면</div>} />
+        <Route
+          path="/change-password"
+          element={
+            <RequireAuth>
+              <div>비밀번호 변경 화면</div>
+            </RequireAuth>
+          }
+        />
         <Route
           path="/"
           element={
@@ -47,6 +55,7 @@ describe("RequireAuth", () => {
         name: "관리자",
         email: "admin@menscake.com",
         role: "ADMIN",
+        mustChangePassword: false,
       },
       permissions: [],
     })
@@ -65,6 +74,7 @@ describe("RequireAuth", () => {
         name: "관리자",
         email: "admin@menscake.com",
         role: "ADMIN",
+        mustChangePassword: false,
       },
       permissions: [],
     })
@@ -81,5 +91,60 @@ describe("RequireAuth", () => {
     renderGuarded()
 
     expect(await screen.findByText("로그인 화면")).toBeInTheDocument()
+  })
+
+  it("mustChangePassword가 true면 /change-password 외 경로에서 강제 리다이렉트한다", async () => {
+    useAuthStore.setState({
+      accessToken: "token",
+      account: {
+        id: 1,
+        name: "관리자",
+        email: "admin@menscake.com",
+        role: "ADMIN",
+        mustChangePassword: true,
+      },
+      permissions: [],
+    })
+
+    renderGuarded()
+
+    expect(await screen.findByText("비밀번호 변경 화면")).toBeInTheDocument()
+    expect(mockedRefresh).not.toHaveBeenCalled()
+  })
+
+  it("mustChangePassword가 true여도 /change-password 자체는 리다이렉트하지 않는다", async () => {
+    useAuthStore.setState({
+      accessToken: "token",
+      account: {
+        id: 1,
+        name: "관리자",
+        email: "admin@menscake.com",
+        role: "ADMIN",
+        mustChangePassword: true,
+      },
+      permissions: [],
+    })
+
+    renderGuarded(["/change-password"])
+
+    expect(await screen.findByText("비밀번호 변경 화면")).toBeInTheDocument()
+  })
+
+  it("mustChangePassword가 false면 리다이렉트 없이 그대로 렌더링한다", async () => {
+    useAuthStore.setState({
+      accessToken: "token",
+      account: {
+        id: 1,
+        name: "관리자",
+        email: "admin@menscake.com",
+        role: "ADMIN",
+        mustChangePassword: false,
+      },
+      permissions: [],
+    })
+
+    renderGuarded()
+
+    expect(await screen.findByText("보호된 화면")).toBeInTheDocument()
   })
 })

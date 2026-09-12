@@ -12,6 +12,8 @@ interface AuthState {
   permissions: PermissionSummary[]
   setAuth: (auth: AuthResponse) => void
   clearAuth: () => void
+  /** `/change-password` 성공 후 라우트 가드가 더는 리다이렉트하지 않도록 스토어만 갱신한다. */
+  setMustChangePassword: (mustChangePassword: boolean) => void
 }
 
 /**
@@ -30,4 +32,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       permissions: auth.permissions,
     }),
   clearAuth: () => set({ accessToken: null, account: null, permissions: [] }),
+  setMustChangePassword: (mustChangePassword) =>
+    set((state) =>
+      state.account
+        ? { account: { ...state.account, mustChangePassword } }
+        : state
+    ),
 }))
