@@ -68,9 +68,11 @@ class SecurityConfig(
      */
     private fun writeUnauthorized(response: HttpServletResponse) {
         response.status = HttpServletResponse.SC_UNAUTHORIZED
-        response.contentType = "application/problem+json"
+        // charset 미지정 시 response.writer가 Servlet 스펙 기본값인 ISO-8859-1로 인코딩해
+        // 한글이 전부 '?'로 깨진다. outputStream에 직접 쓰면 Jackson이 UTF-8로 직렬화한다.
+        response.contentType = "application/problem+json;charset=UTF-8"
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "인증이 필요합니다")
-        objectMapper.writeValue(response.writer, problemDetail)
+        objectMapper.writeValue(response.outputStream, problemDetail)
     }
 
     private fun corsConfigurationSource(): CorsConfigurationSource {
