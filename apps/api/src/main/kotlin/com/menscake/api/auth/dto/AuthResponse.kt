@@ -21,6 +21,7 @@ data class AccountSummary(
     val name: String,
     val email: String,
     val role: Role,
+    val mustChangePassword: Boolean,
 )
 
 data class PermissionSummary(

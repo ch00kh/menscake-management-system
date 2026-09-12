@@ -1,7 +1,9 @@
 package com.menscake.api.auth
 
 import com.menscake.api.auth.dto.AuthResponse
+import com.menscake.api.auth.dto.ChangePasswordRequest
 import com.menscake.api.auth.dto.LoginRequest
+import com.menscake.api.auth.jwt.JwtPrincipal
 import com.menscake.api.auth.jwt.JwtProperties
 import com.menscake.api.common.response.ApiResponse
 import jakarta.servlet.http.HttpServletRequest
@@ -9,6 +11,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseCookie
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -51,6 +54,19 @@ class AuthController(
             .noContent()
             .header(HttpHeaders.SET_COOKIE, expiredRefreshTokenCookie().toString())
             .build()
+    }
+
+    /**
+     * 인증된 본인의 비밀번호 변경 — 다른 계정 대상 아님, 별도 권한 체크 불필요
+     * (docs/spec/account-management/api.md 참조). 응답은 `data: null`로 내려간다.
+     */
+    @PostMapping("/change-password")
+    fun changePassword(
+        @AuthenticationPrincipal principal: JwtPrincipal,
+        @Valid @RequestBody request: ChangePasswordRequest,
+    ): ApiResponse<Unit?> {
+        authService.changePassword(principal.accountId, request.currentPassword, request.newPassword)
+        return ApiResponse(null)
     }
 
     private fun readRefreshTokenCookie(request: HttpServletRequest): String? =

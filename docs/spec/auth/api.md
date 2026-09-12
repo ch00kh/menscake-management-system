@@ -24,7 +24,7 @@ DTO: 요청 `LoginRequest`, 응답 `ApiResponse<AuthResponse>`
 {
   "data": {
     "accessToken": "...",
-    "account": { "id": 1, "name": "...", "email": "...", "role": "ADMIN" },
+    "account": { "id": 1, "name": "...", "email": "...", "role": "ADMIN", "mustChangePassword": false },
     "permissions": [
       { "resource": "orders", "canCreate": true, "canRead": true, "canUpdate": true, "canDelete": false }
     ]
@@ -41,6 +41,7 @@ DTO: 요청 `LoginRequest`, 응답 `ApiResponse<AuthResponse>`
 | `account.name` | string | - | - | - |
 | `account.email` | string | - | - | - |
 | `account.role` | string | **분류** | `ADMIN` \| `MANAGER` \| `STAFF` | 인가 판단에 안 쓰임 — 화면 표시/필터용 (`docs/glossary.md` 참조) |
+| `account.mustChangePassword` | boolean | **상태** | `true` \| `false` | `true`면 로그인 직후 `/change-password`로 강제 이동 (`docs/spec/account-management/flow.md`의 비밀번호 변경 강제 흐름 참조) |
 | `permissions[].resource` | string | - | 자유 문자열 키 | 아직 실제 업무 메뉴 없음 (`schema.md` 참조) |
 | `permissions[].canCreate` | boolean | **상태** | `true` \| `false` | `@RequiresPermission(action=CREATE)` 판단에 쓰임 |
 | `permissions[].canRead` | boolean | **상태** | `true` \| `false` | `@RequiresPermission(action=READ)` 판단에 쓰임 |

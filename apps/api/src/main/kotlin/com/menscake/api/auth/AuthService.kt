@@ -72,6 +72,31 @@ class AuthService(
             ?.revoke()
     }
 
+    /**
+     * 인증된 본인의 `POST /api/auth/change-password` — 다른 계정 대상 아님, 별도
+     * 권한 체크 불필요 (docs/spec/account-management/api.md 참조). 성공 시
+     * `mustChangePassword`를 `false`로 되돌린다.
+     */
+    @Transactional
+    fun changePassword(
+        accountId: Long,
+        currentPassword: String,
+        newPassword: String,
+    ) {
+        val account =
+            accountRepository
+                .findById(accountId)
+                .orElseThrow { InvalidCurrentPasswordException() }
+
+        if (!passwordEncoder.matches(currentPassword, account.passwordHash)) {
+            throw InvalidCurrentPasswordException()
+        }
+
+        // PasswordEncoder.encode()는 Spring Security 7의 JSpecify @Nullable 시그니처
+        // 때문에 String?을 반환하지만, BCryptPasswordEncoder는 실질적으로 null을 반환하지 않는다.
+        account.changeOwnPassword(passwordEncoder.encode(newPassword)!!)
+    }
+
     private fun issueSession(account: Account): AuthResult {
         val permissions =
             permissionRepository.findByAccountId(account.id).map {
@@ -103,6 +128,7 @@ class AuthService(
                         name = account.name,
                         email = account.email,
                         role = account.role,
+                        mustChangePassword = account.mustChangePassword,
                     ),
                 permissions = permissions,
             )

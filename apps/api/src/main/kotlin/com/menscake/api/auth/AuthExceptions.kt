@@ -8,3 +8,6 @@ class InvalidCredentialsException : RuntimeException("이메일 또는 비밀번
 
 /** Refresh Token이 없거나 만료·철회·위조된 경우 던진다. */
 class InvalidRefreshTokenException : RuntimeException("유효하지 않은 세션입니다")
+
+/** `POST /api/auth/change-password`에서 `currentPassword`가 실제 비밀번호와 불일치 (docs/spec/account-management/api.md 참조). */
+class InvalidCurrentPasswordException : RuntimeException("현재 비밀번호가 올바르지 않습니다")

@@ -1,7 +1,12 @@
 package com.menscake.api.common.error
 
+import com.menscake.api.auth.AccountNotFoundException
+import com.menscake.api.auth.DuplicateEmailException
 import com.menscake.api.auth.InvalidCredentialsException
+import com.menscake.api.auth.InvalidCurrentPasswordException
 import com.menscake.api.auth.InvalidRefreshTokenException
+import com.menscake.api.auth.LastActiveAccountException
+import com.menscake.api.auth.SelfAccountProtectionException
 import com.menscake.api.auth.permission.PermissionDeniedException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
@@ -47,4 +52,24 @@ class GlobalExceptionHandler {
     @ExceptionHandler(PermissionDeniedException::class)
     fun handlePermissionDenied(ex: PermissionDeniedException): ProblemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message ?: "권한이 없습니다")
+
+    /** 존재하지 않는 계정 id (docs/spec/account-management/api.md 참조). */
+    @ExceptionHandler(AccountNotFoundException::class)
+    fun handleAccountNotFound(ex: AccountNotFoundException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message ?: "계정을 찾을 수 없습니다")
+
+    /** 이메일 중복 — 계정 생성 시 409. */
+    @ExceptionHandler(DuplicateEmailException::class)
+    fun handleDuplicateEmail(ex: DuplicateEmailException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message ?: "이미 사용 중인 이메일입니다")
+
+    /** 본인 계정 보호 위반 / change-password 현재 비밀번호 불일치 — 둘 다 400. */
+    @ExceptionHandler(SelfAccountProtectionException::class, InvalidCurrentPasswordException::class)
+    fun handleBadRequest(ex: RuntimeException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.message ?: "잘못된 요청입니다")
+
+    /** 마지막 남은 활성 계정 보호 위반 — 409. */
+    @ExceptionHandler(LastActiveAccountException::class)
+    fun handleLastActiveAccount(ex: LastActiveAccountException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message ?: "마지막 남은 활성 계정입니다")
 }
