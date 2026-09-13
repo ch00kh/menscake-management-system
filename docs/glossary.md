@@ -25,3 +25,11 @@
 |---|---|---|
 | 비밀번호 변경 강제 | 관리자가 계정을 생성/비밀번호 재설정하면 다음 로그인 시 비밀번호 변경 화면으로 강제 이동시키는 상태 | `Account.mustChangePassword` (boolean) |
 | 비밀번호 재설정 | 관리자가 기존 계정의 비밀번호를 대신 설정하는 액션. 대상 계정은 다시 변경 강제 대상이 됨 | `PATCH /api/accounts/{id}`의 `password` 필드 |
+
+## 권한 관리 (permission-management) — [스펙](./spec/permission-management/overview.md)
+
+| 용어 | 의미 | 코드/DB 이름 |
+|---|---|---|
+| 리소스 화이트리스트 | 권한 부여 대상이 될 수 있는 리소스 키 전체 목록. DB 테이블이 아니라 코드 상수 | `PermissionResource` enum (`key`, `label`) |
+| 기본값 프리필 | 저장된 권한 행이 하나도 없는 계정의 매트릭스를 열 때, role에 따라 화면에만 미리 채워두는 CRUD 값. 저장 전까지는 실제 `permission` 행이 아님 | 프론트 전용 계산값 |
+| 자기잠금 방지 | 로그인 본인 계정의 `permissions` 리소스 조회/수정 권한을 스스로 없애 이 화면에서 잠기는 것을 막는 검사 | `PUT /api/accounts/{id}/permissions`의 400 응답 조건 |
