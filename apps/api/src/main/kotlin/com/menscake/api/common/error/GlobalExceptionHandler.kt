@@ -7,6 +7,7 @@ import com.menscake.api.auth.InvalidCurrentPasswordException
 import com.menscake.api.auth.InvalidRefreshTokenException
 import com.menscake.api.auth.LastActiveAccountException
 import com.menscake.api.auth.SelfAccountProtectionException
+import com.menscake.api.auth.UnknownPermissionResourceException
 import com.menscake.api.auth.permission.PermissionDeniedException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
@@ -63,8 +64,15 @@ class GlobalExceptionHandler {
     fun handleDuplicateEmail(ex: DuplicateEmailException): ProblemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message ?: "이미 사용 중인 이메일입니다")
 
-    /** 본인 계정 보호 위반 / change-password 현재 비밀번호 불일치 — 둘 다 400. */
-    @ExceptionHandler(SelfAccountProtectionException::class, InvalidCurrentPasswordException::class)
+    /**
+     * 본인 계정 보호 위반(권한 관리 자기잠금 방지 포함) / change-password 현재 비밀번호
+     * 불일치 / 권한 관리 화이트리스트에 없는 리소스 키 — 모두 400.
+     */
+    @ExceptionHandler(
+        SelfAccountProtectionException::class,
+        InvalidCurrentPasswordException::class,
+        UnknownPermissionResourceException::class,
+    )
     fun handleBadRequest(ex: RuntimeException): ProblemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.message ?: "잘못된 요청입니다")
 
