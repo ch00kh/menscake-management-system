@@ -8,9 +8,10 @@
 - 동시 작업 2~3개를 감안해 브랜치 수명은 며칠 이내로 짧게 유지.
 - 배포: `dev` 반영 → 개발 서버, `main` 반영 → 운영 서버 (GitHub Actions)
 
-**네이밍:** `<type>/<scope>-<short-description>` (kebab-case, `dev`에서 분기 — 작업 단위별 GitHub Issue를 안 쓰기로 하면서 이슈 번호는 뺐다, `docs/rule/agent-collaboration.md` 참조)
+**네이밍:** `<type>/<scope>-<short-description>` (kebab-case, `dev`에서 분기). 사람이 작성한 이슈에서 시작하는 작업이면 이슈 번호를 넣어도 된다: `<type>/<scope>-<issue번호>-<short-description>` (`docs/rule/agent-collaboration.md` 참조).
 ```
 feat/api-refund-flow
+feat/api-42-refund-flow
 fix/web-cart-total-rounding
 ```
 
