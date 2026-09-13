@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   FilterIcon,
+  KeyRoundIcon,
   PencilIcon,
   PlusIcon,
   RotateCcwIcon,
@@ -21,7 +22,14 @@ import {
   type AccountSearchParams,
 } from "@/api/accounts"
 import { ApiError, type Role } from "@/api/auth"
+import {
+  fetchAccountPermissions,
+  fetchPermissionResources,
+  updateAccountPermissions,
+} from "@/api/permissions"
 import { useAuthStore } from "@/hooks/useAuthStore"
+import { hasPermission } from "@/lib/permissions"
+import { buildPermissionMatrix, type PermissionRow } from "@/lib/permissionMatrix"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import {
   AlertDialog,
@@ -35,6 +43,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogClose,
@@ -99,6 +108,13 @@ function apiErrorMessage(error: unknown, fallback: string): string {
 /** 검색어/역할/활성상태 조건에 맞는 계정 목록을 검색·필터로 조회, 생성/수정/삭제하는 화면. */
 export function AccountManagementPage() {
   const currentAccountId = useAuthStore((state) => state.account?.id)
+  const permissions = useAuthStore((state) => state.permissions)
+  const canReadPermissions = hasPermission(permissions, "permissions", "canRead")
+  const canEditPermissions = hasPermission(
+    permissions,
+    "permissions",
+    "canUpdate"
+  )
   const queryClient = useQueryClient()
 
   const [queryInput, setQueryInput] = useState("")
@@ -113,6 +129,8 @@ export function AccountManagementPage() {
     null
   )
   const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [permissionTarget, setPermissionTarget] =
+    useState<AccountResponse | null>(null)
 
   const searchParams: AccountSearchParams = {
     ...appliedFilters,
@@ -316,6 +334,16 @@ export function AccountManagementPage() {
                         >
                           <PencilIcon />
                         </Button>
+                        {canReadPermissions ? (
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label={`${account.name} 권한`}
+                            onClick={() => setPermissionTarget(account)}
+                          >
+                            <KeyRoundIcon />
+                          </Button>
+                        ) : null}
                         <Button
                           variant="ghost"
                           size="icon-sm"
@@ -374,6 +402,14 @@ export function AccountManagementPage() {
         onUpdated={() => {
           setEditTarget(null)
           void invalidateAccounts()
+        }}
+      />
+
+      <PermissionMatrixDialog
+        account={permissionTarget}
+        canEdit={canEditPermissions}
+        onOpenChange={(open) => {
+          if (!open) setPermissionTarget(null)
         }}
       />
 
@@ -712,6 +748,193 @@ function EditAccountForm({
           </Button>
         </SheetFooter>
       </form>
+    </>
+  )
+}
+
+const PERMISSION_RESOURCES_QUERY_KEY = "permission-resources"
+const ACCOUNT_PERMISSIONS_QUERY_KEY = "account-permissions"
+
+type PermissionField = "canCreate" | "canRead" | "canUpdate" | "canDelete"
+
+const PERMISSION_FIELDS: PermissionField[] = [
+  "canCreate",
+  "canRead",
+  "canUpdate",
+  "canDelete",
+]
+const PERMISSION_FIELD_LABEL: Record<PermissionField, string> = {
+  canCreate: "생성",
+  canRead: "조회",
+  canUpdate: "수정",
+  canDelete: "삭제",
+}
+
+function PermissionMatrixDialog({
+  account,
+  canEdit,
+  onOpenChange,
+}: {
+  account: AccountResponse | null
+  canEdit: boolean
+  onOpenChange: (open: boolean) => void
+}) {
+  return (
+    <Dialog open={!!account} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        {account ? (
+          <PermissionMatrixForm
+            key={account.id}
+            account={account}
+            canEdit={canEdit}
+            onClose={() => onOpenChange(false)}
+          />
+        ) : null}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function PermissionMatrixForm({
+  account,
+  canEdit,
+  onClose,
+}: {
+  account: AccountResponse
+  canEdit: boolean
+  onClose: () => void
+}) {
+  const [rows, setRows] = useState<PermissionRow[] | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
+  const resourcesQuery = useQuery({
+    queryKey: [PERMISSION_RESOURCES_QUERY_KEY],
+    queryFn: fetchPermissionResources,
+  })
+  const accountPermissionsQuery = useQuery({
+    queryKey: [ACCOUNT_PERMISSIONS_QUERY_KEY, account.id],
+    queryFn: () => fetchAccountPermissions(account.id),
+  })
+
+  const whitelist = resourcesQuery.data
+  const savedRows = accountPermissionsQuery.data
+
+  // 최초 로드시에만 매트릭스를 계산해 시드한다(렌더 중 상태 조정 — 이후 편집 중
+  // 백그라운드 refetch가 일어나도(예: 창 포커스) 사용자가 체크해둔 값을 덮어쓰지 않는다).
+  if (rows === null && whitelist && savedRows) {
+    setRows(buildPermissionMatrix(whitelist, savedRows, account.role))
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: (items: PermissionRow[]) =>
+      updateAccountPermissions(
+        account.id,
+        items.map(({ resource, canCreate, canRead, canUpdate, canDelete }) => ({
+          resource,
+          canCreate,
+          canRead,
+          canUpdate,
+          canDelete,
+        }))
+      ),
+    onSuccess: () => {
+      setSubmitError(null)
+      onClose()
+    },
+    onError: (error) => {
+      setSubmitError(apiErrorMessage(error, "권한 저장에 실패했습니다"))
+    },
+  })
+
+  function toggle(resource: string, field: PermissionField, checked: boolean) {
+    setRows(
+      (current) =>
+        current?.map((row) =>
+          row.resource === resource ? { ...row, [field]: checked } : row
+        ) ?? null
+    )
+  }
+
+  const isLoading =
+    resourcesQuery.isLoading || accountPermissionsQuery.isLoading
+  const isError = resourcesQuery.isError || accountPermissionsQuery.isError
+
+  return (
+    <>
+      <DialogHeader>
+        <DialogTitle>권한 관리</DialogTitle>
+        <DialogDescription>
+          {account.name}({account.email}) 계정의 리소스별 권한을 설정합니다.
+          {canEdit ? null : " 조회 전용입니다."}
+        </DialogDescription>
+      </DialogHeader>
+
+      {isError ? (
+        <FieldError>
+          {apiErrorMessage(
+            resourcesQuery.error ?? accountPermissionsQuery.error,
+            "권한 정보를 불러오지 못했습니다"
+          )}
+        </FieldError>
+      ) : null}
+
+      {isLoading || !rows ? (
+        <p className="py-6 text-center text-sm text-muted-foreground">
+          불러오는 중...
+        </p>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>리소스</TableHead>
+              {PERMISSION_FIELDS.map((field) => (
+                <TableHead key={field} className="text-center">
+                  {PERMISSION_FIELD_LABEL[field]}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={row.resource}>
+                <TableCell>
+                  <div className="font-medium">{row.label}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {row.resource}
+                  </div>
+                </TableCell>
+                {PERMISSION_FIELDS.map((field) => (
+                  <TableCell key={field} className="text-center">
+                    <Checkbox
+                      aria-label={`${row.label} ${PERMISSION_FIELD_LABEL[field]}`}
+                      checked={row[field]}
+                      disabled={!canEdit}
+                      onCheckedChange={(checked) =>
+                        toggle(row.resource, field, checked === true)
+                      }
+                    />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+
+      {submitError ? <FieldError>{submitError}</FieldError> : null}
+
+      <DialogFooter>
+        <DialogClose render={<Button variant="outline">닫기</Button>} />
+        <Button
+          disabled={!canEdit || !rows || saveMutation.isPending}
+          title={canEdit ? undefined : "권한 수정 권한이 없습니다"}
+          onClick={() => {
+            if (rows) saveMutation.mutate(rows)
+          }}
+        >
+          저장
+        </Button>
+      </DialogFooter>
     </>
   )
 }

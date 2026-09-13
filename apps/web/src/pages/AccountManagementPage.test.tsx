@@ -11,6 +11,11 @@ import {
   type Page,
 } from "@/api/accounts"
 import { ApiError } from "@/api/auth"
+import {
+  fetchAccountPermissions,
+  fetchPermissionResources,
+  updateAccountPermissions,
+} from "@/api/permissions"
 import { AccountManagementPage } from "@/pages/AccountManagementPage"
 import { useAuthStore } from "@/hooks/useAuthStore"
 
@@ -25,10 +30,23 @@ vi.mock("@/api/accounts", async (importOriginal) => {
   }
 })
 
+vi.mock("@/api/permissions", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/api/permissions")>()
+  return {
+    ...actual,
+    fetchPermissionResources: vi.fn(),
+    fetchAccountPermissions: vi.fn(),
+    updateAccountPermissions: vi.fn(),
+  }
+})
+
 const mockedFetchAccounts = vi.mocked(fetchAccounts)
 const mockedCreateAccount = vi.mocked(createAccount)
 const mockedUpdateAccount = vi.mocked(updateAccount)
 const mockedDeleteAccount = vi.mocked(deleteAccount)
+const mockedFetchPermissionResources = vi.mocked(fetchPermissionResources)
+const mockedFetchAccountPermissions = vi.mocked(fetchAccountPermissions)
+const mockedUpdateAccountPermissions = vi.mocked(updateAccountPermissions)
 
 function page(content: AccountResponse[]): Page<AccountResponse> {
   return { content, totalElements: content.length, totalPages: 1, number: 0, size: 20 }
@@ -61,6 +79,9 @@ describe("AccountManagementPage", () => {
     mockedCreateAccount.mockReset()
     mockedUpdateAccount.mockReset()
     mockedDeleteAccount.mockReset()
+    mockedFetchPermissionResources.mockReset()
+    mockedFetchAccountPermissions.mockReset()
+    mockedUpdateAccountPermissions.mockReset()
     useAuthStore.setState({
       accessToken: "token",
       account: {
@@ -220,5 +241,130 @@ describe("AccountManagementPage", () => {
     expect(await screen.findByText("홍길동")).toBeInTheDocument()
 
     expect(screen.getByRole("button", { name: "홍길동 삭제" })).toBeDisabled()
+  })
+
+  it("permissions:READ 권한이 없으면 권한 버튼을 보여주지 않는다", async () => {
+    mockedFetchAccounts.mockResolvedValue(page([STAFF_ACCOUNT]))
+
+    renderPage()
+    expect(await screen.findByText("홍길동")).toBeInTheDocument()
+
+    expect(
+      screen.queryByRole("button", { name: "홍길동 권한" })
+    ).not.toBeInTheDocument()
+  })
+
+  it("permissions:READ만 있으면 권한 버튼을 보여주되 매트릭스는 조회 전용이다", async () => {
+    const user = userEvent.setup()
+    useAuthStore.setState({
+      accessToken: "token",
+      account: {
+        id: 1,
+        name: "관리자",
+        email: "admin@menscake.com",
+        role: "ADMIN",
+        mustChangePassword: false,
+      },
+      permissions: [
+        {
+          resource: "permissions",
+          canCreate: false,
+          canRead: true,
+          canUpdate: false,
+          canDelete: false,
+        },
+      ],
+    })
+    mockedFetchAccounts.mockResolvedValue(page([STAFF_ACCOUNT]))
+    mockedFetchPermissionResources.mockResolvedValue([
+      { key: "accounts", label: "계정 관리" },
+      { key: "permissions", label: "권한 관리" },
+    ])
+    mockedFetchAccountPermissions.mockResolvedValue([])
+
+    renderPage()
+    expect(await screen.findByText("홍길동")).toBeInTheDocument()
+
+    await user.click(screen.getByRole("button", { name: "홍길동 권한" }))
+
+    await waitFor(() => {
+      expect(mockedFetchPermissionResources).toHaveBeenCalled()
+      expect(mockedFetchAccountPermissions).toHaveBeenCalledWith(
+        STAFF_ACCOUNT.id
+      )
+    })
+
+    const readCheckbox = await screen.findByRole("checkbox", {
+      name: "계정 관리 조회",
+    })
+    expect(readCheckbox).toBeChecked()
+    expect(readCheckbox).toHaveAttribute("aria-disabled", "true")
+    expect(screen.getByRole("button", { name: "저장" })).toBeDisabled()
+  })
+
+  it("permissions:UPDATE까지 있으면 매트릭스를 편집해 저장할 수 있다", async () => {
+    const user = userEvent.setup()
+    useAuthStore.setState({
+      accessToken: "token",
+      account: {
+        id: 1,
+        name: "관리자",
+        email: "admin@menscake.com",
+        role: "ADMIN",
+        mustChangePassword: false,
+      },
+      permissions: [
+        {
+          resource: "permissions",
+          canCreate: false,
+          canRead: true,
+          canUpdate: true,
+          canDelete: false,
+        },
+      ],
+    })
+    mockedFetchAccounts.mockResolvedValue(page([STAFF_ACCOUNT]))
+    mockedFetchPermissionResources.mockResolvedValue([
+      { key: "accounts", label: "계정 관리" },
+      { key: "permissions", label: "권한 관리" },
+    ])
+    mockedFetchAccountPermissions.mockResolvedValue([])
+    mockedUpdateAccountPermissions.mockResolvedValue([])
+
+    renderPage()
+    expect(await screen.findByText("홍길동")).toBeInTheDocument()
+
+    await user.click(screen.getByRole("button", { name: "홍길동 권한" }))
+
+    const createCheckbox = await screen.findByRole("checkbox", {
+      name: "계정 관리 생성",
+    })
+    expect(createCheckbox).not.toBeChecked()
+    await user.click(createCheckbox)
+    expect(createCheckbox).toBeChecked()
+
+    await user.click(screen.getByRole("button", { name: "저장" }))
+
+    await waitFor(() => {
+      expect(mockedUpdateAccountPermissions).toHaveBeenCalledWith(
+        STAFF_ACCOUNT.id,
+        [
+          {
+            resource: "accounts",
+            canCreate: true,
+            canRead: true,
+            canUpdate: false,
+            canDelete: false,
+          },
+          {
+            resource: "permissions",
+            canCreate: false,
+            canRead: true,
+            canUpdate: false,
+            canDelete: false,
+          },
+        ]
+      )
+    })
   })
 })
