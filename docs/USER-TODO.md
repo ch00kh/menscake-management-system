@@ -6,6 +6,11 @@
 
 - [x] ERP 레이아웃 자료 전달 (shadcn/ui로 이미 만들어둔 것) — `apps/web`에 30종 레이아웃 스캐폴딩으로 반영됨
 - [x] GitHub 조직/저장소 생성 — `ch00kh/menscake-management-system`에 초기 스캐폴딩 push 완료
+- [ ] 로컬 dev 서버(5173/8080) 외부 접속용 방화벽 인바운드 규칙 추가 — 관리자 권한 PowerShell 필요, 에이전트는 권한이 없어 대신 못 함. 관리자 권한 PowerShell에서:
+  ```powershell
+  New-NetFirewallRule -DisplayName "menscake-dev-web-5173" -Direction Inbound -Protocol TCP -LocalPort 5173 -Action Allow -Profile Any
+  New-NetFirewallRule -DisplayName "menscake-dev-api-8080" -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow -Profile Any
+  ```
 
 ## 스캐폴딩/첫 배포 전에 필요
 
