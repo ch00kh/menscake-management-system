@@ -14,7 +14,7 @@
 - [ ] 사내 서버에 GitHub Actions self-hosted runner 등록 — 서버 접근권한 필요 (`docs/rule/infra-deployment.md`)
 - [x] 브랜치 보호 규칙(`main`/`dev`, 최소 1명 승인) 설정 — GitHub Free 플랜은 Private 저장소에 브랜치 보호를 지원하지 않아 저장소를 **Public**으로 전환하고 적용함. CI 필수 체크(`CI` job, `.github/workflows/ci.yml`)도 `docs/rule/ci-convention.md`대로 required status check로 등록 완료. **1인 계정으로는 "본인 PR 승인 불가"라 실질적으로 머지가 막혀서, `enforce_admins`는 끄고 admin(1인)만 승인 없이 머지 가능하도록 예외 처리함** — 팀원이 늘어나면 이 예외를 다시 검토해야 함
 - [x] 라벨 생성 — `feat`/`fix`/`refactor`/`perf`/`test`/`docs`/`chore`/`ci`/`style`/`revert`(type), `web`/`api`(scope), `blocked` (`docs/rule/issue-management.md`). GitHub 기본 라벨(`bug`/`enhancement`/`documentation` 등 10개)은 컨벤션과 무관하고 `bug`/`fix`, `documentation`/`docs`처럼 의미가 겹쳐 혼선을 줄 수 있어 전부 삭제함 — 저장소 라벨이 문서와 정확히 일치
-- [ ] GitHub Projects 보드 — 컬럼(`Backlog → Todo → In Progress → In Review → Done`)과 저장소 링크는 완료. **내장 자동화(workflow)는 API로 세부 설정이 안 돼서 웹 UI에서 직접 켜야 함**: 프로젝트 페이지 `⋯` → Workflows에서 "Item added to project"(→Backlog), "Pull request linked to issue"(→In Review), "Pull request merged"(→Done) 활성화. "Todo→In Progress(assign/브랜치 생성 시)"는 내장 트리거 자체가 없어 자동화 불가 (`docs/TBD.md` 참조)
+- [x] ~~GitHub Projects 보드~~ — 작업 단위별 이슈 트래킹 자체를 폐지하면서 안 쓰던 보드도 삭제함 (`docs/rule/issue-management.md` 참조). 더 이상 할 일 없음.
 - [ ] GitHub Environments(dev/prod) 생성 + Secrets 실제 값 입력: `DB_PASSWORD`, `JWT_SECRET`(32바이트 이상 랜덤 문자열), `ADMIN_SEED_EMAIL`, `ADMIN_SEED_PASSWORD`(dev/prod 환경별로 다른 값 권장) (`docs/rule/env-secrets-convention.md`, `apps/api/README.md`)
 
 ## 나중에 (TBD 트리거될 때 — `docs/TBD.md` 참조)

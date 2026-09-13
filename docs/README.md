@@ -7,8 +7,8 @@
 | 하려는 것 | 볼 문서 |
 |---|---|
 | 브랜치 만들기 / 커밋 메시지 / PR 올리기 | [git-convention](rule/git-convention.md) |
-| 이슈에 할당됐는데 요구사항이 애매함 | [agent-collaboration](rule/agent-collaboration.md) |
-| GitHub Issue 라벨/템플릿/보드 상태 | [issue-management](rule/issue-management.md) |
+| 요구사항이 애매함 | [agent-collaboration](rule/agent-collaboration.md) |
+| PR 라벨 체계 | [issue-management](rule/issue-management.md) |
 | 새 폴더/파일 어디에 둘지 | [repo-structure](rule/repo-structure.md) |
 | 파일명/변수명/DB컬럼명/API경로 네이밍, 필드가 상태인지 분류인지 헷갈릴 때 | [naming-convention](rule/naming-convention.md) |
 | API 응답 JSON 모양, 에러 포맷, 상태코드 | [api-response-convention](rule/api-response-convention.md) |
@@ -34,10 +34,10 @@
 | [git-convention.md](rule/git-convention.md) | 브랜치 전략, 커밋 메시지, PR 규칙 |
 | [repo-structure.md](rule/repo-structure.md) | `apps/web`·`apps/api` 구조, OpenAPI 타입 동기화 |
 | [naming-convention.md](rule/naming-convention.md) | web/api 파일·변수·DB·API 경로 케이스 컨벤션 |
-| [agent-collaboration.md](rule/agent-collaboration.md) | GitHub Issue = SSOT, 가정 절대 금지, 작업 전/후 체크리스트 |
+| [agent-collaboration.md](rule/agent-collaboration.md) | 스펙 문서 = SSOT, 가정 절대 금지, 작업 전/후 체크리스트 |
 | [documentation-convention.md](rule/documentation-convention.md) | 주석 정책, README, 문서 언어, docs 폴더 구조 |
 | [env-secrets-convention.md](rule/env-secrets-convention.md) | `.env` 원칙, Vite `VITE_` 접두사 주의, GitHub Secrets/Environments |
-| [issue-management.md](rule/issue-management.md) | GitHub Projects 보드, 라벨, 이슈 템플릿 |
+| [issue-management.md](rule/issue-management.md) | PR 라벨 체계 (선택적) — Projects 보드/이슈 트래킹은 폐지 |
 | [code-style-convention.md](rule/code-style-convention.md) | ESLint+Prettier(web), ktlint(api), 커밋 시 auto-fix |
 | [tech-stack.md](rule/tech-stack.md) | web/api 라이브러리 목록, 라우팅/데이터 페칭 역할 분리, 인증 전략 |
 | [infra-deployment.md](rule/infra-deployment.md) | 사내 서버+Docker, self-hosted runner, 도메인/TLS, CORS |
