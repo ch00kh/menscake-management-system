@@ -14,9 +14,9 @@ PR 제목은 커밋 컨벤션 형식을 따릅니다: <type>(<scope>): <한글 s
 -
 -
 
-## 관련 스펙
+## 관련 이슈/스펙
 
-<!-- 관련 스펙 문서가 있다면 경로를 적습니다 (예: docs/spec/account-management/overview.md). 스펙 없이 만든 작은 수정이면 이 섹션을 지웁니다. -->
+<!-- 사람이 작성한 이슈에서 시작한 작업이면 `Closes #12`, 스펙 문서 기반 작업이면 스펙 경로(예: docs/spec/account-management/overview.md)를 적습니다. 둘 다 없는 작은 수정이면 이 섹션을 지웁니다. -->
 
 
 ## 변경 유형
