@@ -26,6 +26,8 @@ import tools.jackson.databind.ObjectMapper
  * 쿠키 기반 인증(리프레시 토큰)을 쓰기 때문에 CORS는 credentials를 허용하되
  * `app.cors.allowed-origin`(프로파일별 설정, `docs/rule/infra-deployment.md` 참조)에
  * 지정된 구체적인 origin만 허용한다 — 와일드카드(`*`)는 credentials 허용과 함께 쓸 수 없다.
+ * 쉼표로 구분하면 여러 origin을 동시에 허용한다 (예: 로컬 개발 중 `localhost`와
+ * LAN IP를 동시에 열어야 할 때).
  *
  * `/api/auth/login`, `/api/auth/refresh`, `/api/auth/logout`만 공개하고(로그인 전에도
  * 호출해야 하므로) 나머지(`/api/auth/change-password` 포함)는 [JwtAuthenticationFilter]가
@@ -78,7 +80,7 @@ class SecurityConfig(
     private fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration =
             CorsConfiguration().apply {
-                allowedOrigins = listOf(allowedOrigin)
+                allowedOrigins = allowedOrigin.split(",").map { it.trim() }
                 allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 allowedHeaders = listOf("*")
                 allowCredentials = true
