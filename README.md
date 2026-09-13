@@ -26,6 +26,17 @@ docs/
   spec/      도메인 설계 스펙 (ERD, API 계약 등)
 ```
 
+## 개발 흐름
+
+작업 단위별 GitHub Issue/Projects 보드는 안 쓴다 — 대신:
+
+1. **새 기능**: 브레인스토밍 인터뷰로 요구사항을 정리하고 `docs/spec/<도메인>/` 스펙 문서(overview/schema/api/flow 등)를 쓴다. 이 스펙 문서가 "무엇을 만들지"의 SSOT다.
+2. **구현**: `dev`에서 `<type>/<scope>-<설명>` 브랜치를 판다 (이슈 번호 없음, 예: `feat/web-account-management`). 스펙이 필요 없는 작은 버그 수정/설정 변경은 스펙 없이 바로 브랜치+PR로 진행한다.
+3. **PR**: 로컬 lint/test 통과 + 셀프 diff 리뷰 후 올린다. 본문에 관련 스펙 문서 경로(있다면)를 남긴다.
+4. **머지**: 화면·API 응답처럼 **런타임 동작이 있는 변경은 머지 전에 사람이 직접 실행해서 확인**한다. 문서/설정처럼 동작 확인이 의미 없거나 lint/test만으로 충분히 검증되는 변경은 바로 머지한다.
+
+자세한 규칙은 `docs/rule/agent-collaboration.md`(작업 할당·모호함 처리)와 `docs/rule/git-convention.md`(브랜치/커밋/PR) 참조.
+
 ## 로컬에서 실행하기
 
 ### 1. PostgreSQL 준비
