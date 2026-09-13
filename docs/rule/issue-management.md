@@ -1,29 +1,12 @@
 # Issue Management
 
-## 보드 구조 (GitHub Projects)
+## 변경 이력
 
-컬럼: `Backlog → Todo → In Progress → In Review → Done`
+작업 단위마다 GitHub Issue를 만들고 GitHub Projects 보드(`Backlog → Todo → In Progress → In Review → Done`)로 추적하던 방식은 폐지했다 — 실제로는 보드를 거의 안 봤고, 이슈 생성 자체가 병목으로 느껴졌다. 지금은 `docs/rule/agent-collaboration.md`의 "작업 할당 (SSOT)"대로 스펙 문서(`docs/spec/<도메인>/`) + 사람의 직접 테스트로 대체한다. 보드는 삭제했다.
 
-- Todo → In Progress: assign되거나 브랜치 생성 시 자동
-- In Progress → In Review: PR이 열리면 자동
-- In Review → Done: PR이 머지(=이슈 close)되면 자동
-- GitHub Projects 내장 워크플로우 기능으로 설정한다.
+## 라벨 체계 (PR에 선택적으로 사용)
 
-## 라벨 체계
+이슈를 안 만들어도 라벨 자체는 PR에 붙여 스코프/성격을 빠르게 훑어볼 때 여전히 쓸 수 있다. 필수는 아니다.
 
-- **type**: git 커밋 type과 동일 — `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `chore`, `ci`, `style`, `revert` 
+- **type**: git 커밋 type과 동일 — `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `chore`, `ci`, `style`, `revert`
 - **scope**: `web`, `api`
-- **blocked**: 에이전트가 요구사항이 모호해서 이슈에 질문을 남기고 대기 중일 때 붙인다. ([[agent-collaboration]]의 "가정 절대 금지" 규칙과 연결)
-
-## 이슈 템플릿 필수 항목
-
-- 배경/목적
-- 요구사항
-- 완료 조건 (Acceptance Criteria)
-- 관련 이슈 (있다면)
-
-## 이슈 ↔ 코드 연결
-
-- 브랜치명에 이슈 번호를 포함한다: `<type>/<scope>-<issue번호>-<description>` (예: `feat/api-42-refund-flow`)
-- PR 본문에 `Closes #42`를 남긴다. (`docs/rule/agent-collaboration.md`에 이미 명시된 규칙)
-

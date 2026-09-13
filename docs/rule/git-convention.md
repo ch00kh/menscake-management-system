@@ -8,10 +8,10 @@
 - 동시 작업 2~3개를 감안해 브랜치 수명은 며칠 이내로 짧게 유지.
 - 배포: `dev` 반영 → 개발 서버, `main` 반영 → 운영 서버 (GitHub Actions)
 
-**네이밍:** `<type>/<scope>-<issue번호>-<short-description>` (kebab-case, `dev`에서 분기, 이슈 번호는 `docs/rule/issue-management.md` 참조)
+**네이밍:** `<type>/<scope>-<short-description>` (kebab-case, `dev`에서 분기 — 작업 단위별 GitHub Issue를 안 쓰기로 하면서 이슈 번호는 뺐다, `docs/rule/agent-collaboration.md` 참조)
 ```
-feat/api-42-refund-flow
-fix/web-17-cart-total-rounding
+feat/api-refund-flow
+fix/web-cart-total-rounding
 ```
 
 ## 2. 커밋 메시지

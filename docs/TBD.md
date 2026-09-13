@@ -10,5 +10,4 @@
 | 시크릿 공유 도구 (1Password/Bitwarden 등) | 현재 규모에서는 별도 도구 없이 직접 전달 중 | 팀원이 늘어날 때 | `docs/rule/env-secrets-convention.md` |
 | 로그 수집 스택 (Grafana Loki 등) | 현재는 `docker logs`로 충분한 규모 | 서비스가 늘거나 로그 검색이 자주 필요해질 때 | `docs/rule/logging-timezone-convention.md` |
 | 오프라인 지원 (PWA) | 기본값은 "오프라인 미지원"으로 확정(`docs/rule/tech-stack.md` 인증 전략 참조) — 인증된 API 호출이 오프라인에서 원천적으로 불가능해서, 지금은 오프라인 캐싱 자체를 만들지 않기로 함. 실제 지원하려면 로컬 캐싱/큐잉 전략을 별도 설계해야 함 | 오프라인 사용 요구사항이 실제로 나올 때 — 이 기본 정책 자체를 재검토 | `docs/rule/tech-stack.md` |
-| Todo → In Progress 자동화 (이슈 assign/브랜치 생성 시) | GitHub Projects 내장 workflow에 이 트리거 자체가 없다 (`Item added`/`Item closed`/`Pull request merged`/`Pull request linked to issue`만 있음). 지금은 이 전환만 수동으로 옮긴다 | CI 워크플로우(GitHub Actions)를 실제로 만들 때, Projects API를 호출하는 커스텀 자동화 스크립트 추가를 함께 검토 | `docs/rule/issue-management.md` |
 | `main`/`dev` 브랜치 보호의 `enforce_admins` 예외 (관리자는 승인/CI 없이 머지 가능) | 관리자가 1명뿐이라 "본인 PR 자기 승인 금지"라는 GitHub 제약 때문에 켜두면 아무도 머지 못 함 | 관리자 외 협업자(팀원)가 생길 때 — `enforce_admins`를 다시 켜서 관리자 PR도 남이 승인하게 되돌림 | `docs/rule/git-convention.md` |
